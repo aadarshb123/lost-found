@@ -9,7 +9,7 @@ Setup:
   - .env stores all the confidential information like API keys and port numbers, so it doesnt get pushed up to github; therefore, everyone has to create their own file locally
 
 To Run the App: 
-- "npm run start" in the lost-found directory: I am using nodedemon, so this should run the backend and frontend concurrently
+- "npm run start" in the lost-found directory: I am using nodemon, so this should run the backend and frontend concurrently
 
 Some Helpful Things: 
 - Enable autosaving on VS Code: its gonna be a pain in the ass to save your code everytime make changes and restart the app
