@@ -5,25 +5,18 @@ import placeholder from './assets/Placeholder.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <img src={placeholder} className="lost_found_logo" alt="Lost and found logo" />
-      </div>
-      <h1>Vite + React !!</h1>
+      <h1>
+      🐝
+      </h1>
+      <h1>Georgia Tech Lost & Found</h1>
+      <h2>Find Your Missing Items!</h2>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button>
+          Log In
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

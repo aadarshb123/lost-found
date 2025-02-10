@@ -13,15 +13,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.lost_found_logo {
-  transform: scale(0.5);
-  transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
+.logo {
+  font-size: 2rem;
 }
-
-.lost_found_logo:hover {
-  box-shadow: 0 0 50px 20px rgba(255, 223, 0, 0.8); /* Yellow glow */
-}
-
 
 a {
   font-weight: 500;
