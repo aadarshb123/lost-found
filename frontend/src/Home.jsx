@@ -1,28 +1,32 @@
-import { useState, useEffect } from 'react'
-import './index.css'
+// src/Home.jsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './index.css';
 
-function App() {
+function Home() {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <>
-      <h1>
-      🐝
-      </h1>
+      <h1>🐝</h1>
       <h1>Georgia Tech Lost & Found</h1>
       <h2>Find Your Missing Items!</h2>
       <div className="card">
-        <button>
-          Log In
-        </button>
+        <button onClick={handleLogin}>Log In</button>
       </div>
     </>
-  )
+  );
 }
 
-// Dark Mode
+// Dark Mode Toggle Component
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Set the initial theme based on user's preference or default to light mode
+  // Initialize theme based on saved preference
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -30,13 +34,11 @@ const DarkModeToggle = () => {
     }
   }, []);
 
-  // Handle dark mode toggle
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Apply dark mode class to the body
-  // runs whenever isDarkMode state changes
+  // Apply dark/light mode class to the body and save the preference
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -58,4 +60,4 @@ const DarkModeToggle = () => {
   );
 };
 
-export {App, DarkModeToggle};
+export { Home, DarkModeToggle };
