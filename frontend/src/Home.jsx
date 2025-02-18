@@ -1,12 +1,17 @@
-import { useState, useEffect } from 'react'
-import './index.css'
+import { useState, useEffect } from 'react';
+import './index.css';
+import beeImage from './assets/bee.webp'; // Adjust path if needed
 
 function App() {
   return (
     <>
-      <h1>
-      🐝
-      </h1>
+      <img 
+        src={beeImage} 
+        alt="Georgia Tech Bee" 
+        width="100" 
+        height="100" 
+        style={{ borderRadius: '50%' }}
+      />
       <h1>Georgia Tech Lost & Found</h1>
       <h2>Find Your Missing Items!</h2>
       <div className="card">
@@ -15,14 +20,13 @@ function App() {
         </button>
       </div>
     </>
-  )
+  );
 }
 
 // Dark Mode
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Set the initial theme based on user's preference or default to light mode
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -30,13 +34,10 @@ const DarkModeToggle = () => {
     }
   }, []);
 
-  // Handle dark mode toggle
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Apply dark mode class to the body
-  // runs whenever isDarkMode state changes
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -58,4 +59,4 @@ const DarkModeToggle = () => {
   );
 };
 
-export {App, DarkModeToggle};
+export { App, DarkModeToggle };
