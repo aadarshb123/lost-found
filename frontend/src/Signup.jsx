@@ -1,23 +1,24 @@
+// src/SignUp.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from React Router
-import './Login.css'; // For custom styling
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import './Login.css'; // Reuse Login.css for SignUp styling
 
-function Login() {
+function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate(); // Initialize the navigate function
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Email:', email, 'Password:', password);
-
-    // Navigate to the dashboard or home page after login (if needed)
-  };
-
-  const handleSignUpClick = (e) => {
-    e.preventDefault(); // Prevent the default anchor link behavior
-    navigate('/SignUp'); // Navigate to the sign-up page
+    // Handle sign-up logic here
+    if (password !== confirmPassword) {
+      alert("Passwords don't match!");
+    } else {
+      console.log('Email:', email, 'Password:', password);
+      // Navigate to the verification page after successful sign-up
+      navigate('/verification'); // Navigate to the verification page
+    }
   };
 
   return (
@@ -26,10 +27,10 @@ function Login() {
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="login-container">
-        <h1>Log In</h1>
+        <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="email">GT Email</label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
@@ -48,15 +49,22 @@ function Login() {
               required
             />
           </div>
-          <div className="forgot-password">
-            <a href="#">Forgot Password</a>
+          <div className="input-group">
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input
+              id="confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
           </div>
-          <button type="submit" className="login-btn">Continue</button>
+          <button type="submit" className="login-btn">Create an Account</button>
         </form>
         <div className="create-account">
           <p>
-            Don't have an account? <br />
-            <a href="#" onClick={handleSignUpClick}>Create an Account</a>
+            Have an Account? <br />
+            <a href="/login">Log In</a>
           </p>
         </div>
       </div>
@@ -64,4 +72,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;

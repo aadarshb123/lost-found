@@ -177,7 +177,7 @@
     "react-dom": "^18.3.1",
     "react-is": "^16.13.1",
     "react-refresh": "^0.14.2",
-    "react-router-dom": "^7.1.5",
+    "react-router-dom": "^7.2.0",
     "reflect.getprototypeof": "^1.0.10",
     "regexp.prototype.flags": "^1.5.4",
     "require-directory": "^2.1.1",
