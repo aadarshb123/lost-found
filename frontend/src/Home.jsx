@@ -1,8 +1,18 @@
-import { useState, useEffect } from 'react';
-import './index.css';
-import beeImage from './assets/bee.webp'; // Adjust path if needed
 
-function App() {
+// src/Home.jsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import beeImage from './assets/bee.webp'; // Adjust path if needed
+import './index.css';
+
+function Home() {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+
   return (
     <>
       <img 
@@ -15,15 +25,13 @@ function App() {
       <h1>Georgia Tech Lost & Found</h1>
       <h2>Find Your Missing Items!</h2>
       <div className="card">
-        <button>
-          Log In
-        </button>
+        <button onClick={handleLogin}>Log In</button>
       </div>
     </>
   );
 }
 
-// Dark Mode
+// Dark Mode Toggle Component
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -37,7 +45,6 @@ const DarkModeToggle = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
-
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');

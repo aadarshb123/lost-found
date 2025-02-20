@@ -1,0 +1,242 @@
+/* src/Login.css */
+.background {
+    font-family: "Outfit", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal; /* Use normal for regular bold text */
+    z-index: 1;
+}
+
+.logo {
+    object-fit: cover;
+    position: absolute;
+    top: 13%;
+    left: 10%;
+    z-index: 2; /* Keep it behind the content */
+    filter: blur(0); /* Make sure blur is set to 0 or adjust as needed */
+    width: 35rem; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.login-container {
+    position: relative; /* Ensures it stays in front of the background */
+    left: 65%; /* Move it to the right */
+    width: 350px;
+    margin: 0;
+    padding: 2rem;
+    border-radius: 25px; /* Rounded corners */
+    background: rgba(255, 255, 255, 0.9); /* Transparent background */
+    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    filter: blur(0); /* Make sure blur is set to 0 or adjust as needed */
+    z-index: 3; /* Keep it above the background image */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    display: flex; /* Flexbox layout for input group */
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: flex-start;
+    margin: 0px; /* Align items (label and input) to the left */
+    opacity: 1; /* Child elements remain fully opaque */
+}
+
+label {
+    margin-top: 1rem;
+    margin-bottom: 0.2px; /* Space between label and input */
+    font-size: 1.2rem;
+    color: #003057;
+    margin-left: 2%;
+    opacity: 1; /* Child elements remain fully opaque */
+    font-weight: 600;
+    font-style: normal; /* Use normal for regular bold text */
+}
+
+input {
+    align-self: center;
+    width: 93%;
+    padding: 11px;
+    font-size: 14px;
+    opacity: 1; /* Child elements remain fully opaque */
+    border-radius: 8px;
+    border: 0.1rem solid #dddddd;
+    margin-top: 0.2rem;
+    font-family: "Outfit", serif; /* Change font of typed text */
+}
+
+button.login-btn {
+    width: 40%;
+    padding: 12px;
+    opacity: 1; /* Child elements remain fully opaque */
+    background-color: #B3A369;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button.login-btn:hover {
+    background-color: #f3b72b ;
+}
+
+.forgot-password {
+    text-align: left; /* Align the content inside the forgot-password div to the left */
+    width: 100%;
+    margin-top: 3px; /* Ensure the div takes up the full width */
+}
+
+.forgot-password a {
+    color: #B3A369 ;
+    font-size: 14px;
+    text-decoration: underline;
+    display: inline-block; /* Ensures the link respects the parent container's alignment */
+}
+
+.create-account {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.create-account a {
+    color: #B3A369 ;
+    text-decoration: underline;
+}
+
+.goldshape {
+    position: absolute;
+    height: 37rem;
+    width: 37rem;
+    flex-shrink: 0;
+    top: 0%; /* Adjust position from the top */
+    left: 10%; /* Adjust position from the left */
+    transform: scale(1.1); /* Optional: Scale it slightly */
+    border-radius: 40px;
+    background: rgba(183, 154, 12, 0.76);
+    filter: blur(140px);
+    z-index: -1;
+}
+
+.blueshape {
+    position: absolute;
+    width: 35rem;
+    height: 35rem;
+    flex-shrink: 0;
+    border-radius: 30%; /* Make it a circle */
+    bottom: 0%; /* Adjust position from the top */
+    right: 10%; /* Adjust position from the left */
+    transform: scale(1.1); /* Optional: Scale it slightly */
+    border-radius: 40px;
+    background: #003057;
+    filter: blur(140px);
+    z-index: -1;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    opacity: 1; /* Child elements remain fully opaque */
+    margin-top: 0px;
+    margin-bottom: 1.3rem;
+}
+
+/* Styling for the existing account link in SignUp */
+.existing-account {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .existing-account a {
+    color: #B3A369; /* Styling for the "Log In" link */
+    text-decoration: underline;
+  }
+  
+  /* Reuse the background and layout */
+.background {
+    font-family: "Outfit", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    z-index: 1;
+}
+
+.logo {
+    object-fit: cover;
+    position: absolute;
+    top: 13%;
+    left: 10%;
+    z-index: 2;
+    filter: blur(0);
+    width: 35rem;
+    height: auto;
+}
+
+.login-container {
+    position: relative;
+    left: 65%;
+    width: 350px;
+    margin: 0;
+    padding: 2rem;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    z-index: 3;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    opacity: 1;
+    margin-top: 0px;
+    margin-bottom: 1.3rem;
+}
+
+
+button.login-btn {
+    width: 30%;
+    padding: 12px;
+    opacity: 1;
+    background-color: #B3A369;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+    margin-left: aut
+}
+
+/* Make sure the input fields are horizontally aligned */
+.verification-code {
+    display: flex;                /* Use flexbox to lay out inputs horizontally */
+    justify-content: space-between; /* Evenly distribute the input fields */
+    align-items: center;            /* Align inputs vertically in the center */
+    margin-top: 2rem;               /* Add margin above the inputs */
+}
+
+.verification-code input {
+    width: 50px;               /* Fixed width for each input field */
+    height: 50px;              /* Fixed height to make inputs square */
+    font-size: 2rem;           /* Larger font size for better visibility */
+    text-align: center;        /* Center the text (digits) inside each input */
+    border: 1px solid #ccc;    /* Light border around the inputs */
+    border-radius: 8px;        /* Rounded corners */
+    margin: 0 10px;            /* Space between input fields */
+    opacity: 1;
+}
+
+input:focus {
+    outline: none; /* Remove the outline when an input is focused */
+    border-color: #B3A369; /* Change the border color on focus */
+}
