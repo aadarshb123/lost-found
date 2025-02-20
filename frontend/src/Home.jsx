@@ -1,6 +1,8 @@
+
 // src/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import beeImage from './assets/bee.webp'; // Adjust path if needed
 import './index.css';
 
 function Home() {
@@ -10,9 +12,16 @@ function Home() {
     navigate('/login');
   };
 
+
   return (
     <>
-      <h1>🐝</h1>
+      <img 
+        src={beeImage} 
+        alt="Georgia Tech Bee" 
+        width="100" 
+        height="100" 
+        style={{ borderRadius: '50%' }}
+      />
       <h1>Georgia Tech Lost & Found</h1>
       <h2>Find Your Missing Items!</h2>
       <div className="card">
@@ -26,7 +35,6 @@ function Home() {
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Initialize theme based on saved preference
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -37,8 +45,6 @@ const DarkModeToggle = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
-
-  // Apply dark/light mode class to the body and save the preference
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -60,4 +66,4 @@ const DarkModeToggle = () => {
   );
 };
 
-export { Home, DarkModeToggle };
+export { App, DarkModeToggle };
