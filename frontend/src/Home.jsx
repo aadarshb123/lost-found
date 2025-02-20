@@ -66,4 +66,4 @@ const DarkModeToggle = () => {
   );
 };
 
-export { App, DarkModeToggle };
+export { Home, DarkModeToggle };
