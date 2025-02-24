@@ -14,21 +14,24 @@ export const updateItem = async (req, res) => {
 
 export const createItem = async (req, res) => {
   try {
-    const { name, description, location, status, image, itemType } = req.body;
-
-    const item = new Item({
-      name,
-      description,
-      location,
-      status,
-      image,
-      itemType,
-      user: req.user._id
-    });
-
+    const item = new Item(req.body);
     await item.save();
+
     res.status(201).json({ message: "Item created successfully", item });
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
-}
+};
+
+//delete item
+
+
+//get all items, implement filter logic
+export const getItems = async (req, res) => {
+  try {
+    const items = await Item.find();    
+    res.json({ items });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+};
