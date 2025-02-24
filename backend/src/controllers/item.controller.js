@@ -24,6 +24,17 @@ export const createItem = async (req, res) => {
 };
 
 //delete item
+export const deleteItem = async (req, res) => {
+    try {
+        const deletedItem = await Item.findByIdAndDelete(req.params.id);
+
+        if (!deletedItem) return res.status(404).json({ success: false, message: "Item not found" });
+
+        res.status(200).json({ success: true, message: "Item deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error deleting item", error: error.message });
+    }
+};
 
 
 //get all items, implement filter logic
