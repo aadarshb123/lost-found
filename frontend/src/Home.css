@@ -1,0 +1,107 @@
+/* src/Home.css */
+
+.background {
+    font-family: "Outfit", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    z-index: 1;
+}
+
+/* Gold and Blue Shapes for Background */
+.goldshape {
+    position: absolute;
+    height: 37rem;
+    width: 37rem;
+    flex-shrink: 0;
+    top: 0%;
+    left: 10%;
+    transform: scale(1.1);
+    border-radius: 40px;
+    background: rgba(183, 154, 12, 0.76);
+    filter: blur(140px);
+    z-index: -1;
+}
+
+.blueshape {
+    position: absolute;
+    width: 35rem;
+    height: 35rem;
+    flex-shrink: 0;
+    border-radius: 40px;
+    bottom: 0%;
+    right: 10%;
+    transform: scale(1.1);
+    background: #003057;
+    filter: blur(140px);
+    z-index: -1;
+}
+
+/* Home Page Box Styling */
+.homeBox {
+    width: 30rem;
+    padding: 0.2px 2rem 2rem 2rem;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    z-index: 3;
+}
+
+/* Headings */
+h1 {
+    font-weight: 100; /* Slightly bolder for emphasis */
+    font-size: 1rem; /* Increase size for visibility */
+    opacity: 1;
+    margin-top: 0px;
+    margin-bottom: 0.5rem;
+}
+
+
+h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    margin-top: 1rem; /* Corrected missing value */
+}
+
+
+/* Introductory Text */
+.introText {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #003057;
+    margin-bottom: 1.5rem;
+}
+
+.hl {
+    color: #B3A369;
+    font-weight: 600;
+}
+/* Get Started Buttons Container */
+.getStartedButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Button Styling */
+button {
+    width: 60%;
+    opacity: 1;
+    background-color: #B3A369;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button:hover {
+    background-color: #f3b72b;
+}

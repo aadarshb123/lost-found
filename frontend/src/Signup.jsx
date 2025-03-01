@@ -23,7 +23,7 @@ function SignUp() {
 
   return (
     <div className="background">
-      <img src="src/assets/Designer copy.png" alt="Designer" className="logo" />
+      <img src="src/assets/bee.png" alt="beeLogo" className="logo" />
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="login-container">

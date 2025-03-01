@@ -1,37 +1,34 @@
-
-// src/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import beeImage from './assets/bee.webp'; // Adjust path if needed
-import './index.css';
+import bees from './assets/bee.png'; // Adjust path if needed
+import './Home.css'; // For custom styling
 
 function Home() {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate('/login');
-  };
-
-
   return (
-    <>
-      <img 
-        src={beeImage} 
-        alt="Georgia Tech Bee" 
-        width="100" 
-        height="100" 
-        style={{ borderRadius: '50%' }}
-      />
-      <h1>Georgia Tech Lost & Found</h1>
-      <h2>Find Your Missing Items!</h2>
-      <div className="card">
-        <button onClick={handleLogin}>Log In</button>
+    <div className="background">
+      <div className="goldshape"></div>
+      <div className="blueshape"></div>
+      <div className="homeBox">
+        <h2>Welcome</h2>
+        <h1>GT Lost & Found</h1>
+        <p className="introText">Lost something on campus? <span className='hl'>Don’t panic</span>—we’re here to help! Easily report missing items, find what’s been lost, and reconnect with your belongings.</p>
+        <div className="getStartedButtons">
+          <p>Get Started:</p>
+          <button onClick={() => navigate('/login')}>Log In</button>
+          <button onClick={() => navigate('/signup')}>Sign Up</button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
-// Dark Mode Toggle Component
+export default Home;
+
+
+/*
+ // Dark Mode Toggle Component
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -45,6 +42,7 @@ const DarkModeToggle = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
@@ -65,5 +63,4 @@ const DarkModeToggle = () => {
     </div>
   );
 };
-
-export { Home, DarkModeToggle };
+*/
