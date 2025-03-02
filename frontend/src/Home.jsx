@@ -11,13 +11,19 @@ function Home() {
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="homeBox">
-        <h2>Welcome</h2>
+        <h2>Welcome to</h2>
         <h1>GT Lost & Found</h1>
-        <p className="introText">Lost something on campus? <span className='hl'>Don’t panic</span>—we’re here to help! Easily report missing items, find what’s been lost, and reconnect with your belongings.</p>
+        <p className="introText">Lost something on campus? <br></br><span className='hl'><strong>Don’t panic</strong></span>—we’re here to help! </p>
+        <ul className="features">
+          <li><span className="hoverable">Report</span> a lost or found item in seconds</li>
+          <li><span className="hoverable">Browse</span> reported items to see if yours has been found</li>
+          <li><span className="hoverable">Connect</span> with the person who found your belongings</li>
+          <li><span className="hoverable">Help</span> others by returning lost items</li>
+        </ul>
         <div className="getStartedButtons">
-          <p>Get Started:</p>
-          <button onClick={() => navigate('/login')}>Log In</button>
-          <button onClick={() => navigate('/signup')}>Sign Up</button>
+          <p className="getStarted">Get Started:</p>
+          <button className="loginButton" onClick={() => navigate('/login')}>Log In</button>
+          <button className="signupButton" onClick={() => navigate('/signup')}>Create an Account</button>
         </div>
       </div>
     </div>
@@ -64,3 +70,6 @@ const DarkModeToggle = () => {
   );
 };
 */
+
+
+
