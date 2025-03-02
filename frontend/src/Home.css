@@ -106,12 +106,14 @@ button {
 
 .bee {
     position: absolute;
-    width: 100px; /* Adjust size */
+    width: 70px; /* Adjust bee size */
     height: auto;
-    transition: transform 1s ease-in-out, top 1s ease-in-out, left 1s ease-in-out;
-    z-index: 0; /* Places bees above background but below content */
+    transition: top 10s ease-in-out, left 10s ease-in-out; /* Smooth infinite movement */
+    z-index: 0; /* Keeps bees above background but below content */
     pointer-events: none; /* Prevents bees from blocking clicks */
 }
+
+
 
 
 .signupButton {

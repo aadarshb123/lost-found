@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import beeImage from './assets/bee.png'; // Your bee image
+import beeImage from './assets/bee.png';
 import './Home.css';
 
 function Home() {
   const navigate = useNavigate();
   const [bees, setBees] = useState([]);
 
-  // 🟡 STEP 1: Create bees when page loads
+  // 🟡 STEP 1: Initialize bees on page load
   useEffect(() => {
-    const newBees = Array.from({ length: 5 }, (_, index) => ({
+    const newBees = Array.from({ length: 10 }, (_, index) => ({
       id: index,
       top: Math.random() * 80 + '%',
       left: Math.random() * 80 + '%',
@@ -17,9 +17,9 @@ function Home() {
     setBees(newBees);
   }, []);
 
-  // 🔵 STEP 2: Automatically move bees every 2 seconds
+  // 🔵 STEP 2: Make bees move continuously
   useEffect(() => {
-    const interval = setInterval(() => {
+    const moveBees = () => {
       setBees((prevBees) =>
         prevBees.map((bee) => ({
           ...bee,
@@ -27,14 +27,17 @@ function Home() {
           left: Math.random() * 80 + '%',
         }))
       );
-    }, 2000); // Moves bees every 2 seconds
+    };
 
-    return () => clearInterval(interval); // Cleanup when component unmounts
+    // Move bees every 2 seconds indefinitely
+    const interval = setInterval(moveBees, 2000);
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   return (
     <div className="background">
-      {/* 🐝 STEP 3: Render the bees */}
+      {/* 🐝 STEP 3: Render bees with smooth movement */}
       {bees.map((bee) => (
         <img
           key={bee.id}
@@ -45,11 +48,11 @@ function Home() {
         />
       ))}
 
-      {/* Background Elements */}
+      {/* Background Decorations */}
       <div className="goldshape"></div>
       <div className="blueshape"></div>
 
-      {/* Home Box (Main Content) */}
+      {/* Main Content */}
       <div className="homeBox">
         <h2>Welcome to</h2>
         <h1>GT Lost & Found</h1>
