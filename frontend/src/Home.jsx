@@ -1,19 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bees from './assets/bee.png'; // Adjust path if needed
-import './Home.css'; // For custom styling
+import beeImage from './assets/bee.png'; // Your bee image
+import './Home.css';
 
 function Home() {
   const navigate = useNavigate();
+  const [bees, setBees] = useState([]);
+
+  // 🟡 STEP 1: Create bees when page loads
+  useEffect(() => {
+    const newBees = Array.from({ length: 5 }, (_, index) => ({
+      id: index,
+      top: Math.random() * 80 + '%',
+      left: Math.random() * 80 + '%',
+    }));
+    setBees(newBees);
+  }, []);
+
+  // 🔵 STEP 2: Automatically move bees every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBees((prevBees) =>
+        prevBees.map((bee) => ({
+          ...bee,
+          top: Math.random() * 80 + '%',
+          left: Math.random() * 80 + '%',
+        }))
+      );
+    }, 2000); // Moves bees every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup when component unmounts
+  }, []);
 
   return (
     <div className="background">
+      {/* 🐝 STEP 3: Render the bees */}
+      {bees.map((bee) => (
+        <img
+          key={bee.id}
+          src={beeImage}
+          className="bee"
+          style={{ top: bee.top, left: bee.left }}
+          alt="Bee"
+        />
+      ))}
+
+      {/* Background Elements */}
       <div className="goldshape"></div>
       <div className="blueshape"></div>
+
+      {/* Home Box (Main Content) */}
       <div className="homeBox">
         <h2>Welcome to</h2>
         <h1>GT Lost & Found</h1>
-        <p className="introText">Lost something on campus? <br></br><span className='hl'><strong>Don’t panic</strong></span>—we’re here to help! </p>
+        <p className="introText">
+          Lost something on campus? <br />
+          <span className="hl"><strong>Don’t panic</strong></span>—we’re here to help!
+        </p>
         <ul className="features">
           <li><span className="hoverable">Report</span> a lost or found item in seconds</li>
           <li><span className="hoverable">Browse</span> reported items to see if yours has been found</li>
@@ -31,45 +74,3 @@ function Home() {
 }
 
 export default Home;
-
-
-/*
- // Dark Mode Toggle Component
-const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.add('light-mode');
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  return (
-    <div>
-      <button onClick={toggleDarkMode} id="theme-toggle-btn">
-        {isDarkMode ? '🌞' : '🌙'}
-      </button>
-    </div>
-  );
-};
-*/
-
-
-
