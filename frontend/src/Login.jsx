@@ -20,6 +20,11 @@ function Login() {
     navigate('/SignUp'); // Navigate to the sign-up page
   };
 
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault(); // Prevent the default anchor link behavior
+    navigate('/ForgotPassword'); // Navigate to the forgot password page
+  }
+
   return (
     <div className="background">
       <div className="goldshape"></div>
@@ -51,7 +56,7 @@ function Login() {
             />
           </div>
           <div className="forgot-password">
-            <a href="#">Forgot Password</a>
+            <a href="#" onClick={handleForgotPasswordClick}>Forgot Password</a>
           </div>
           <button type="submit" className="login-btn">Continue</button>
         </form>

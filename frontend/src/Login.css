@@ -172,3 +172,9 @@ input:focus {
     outline: none;
     border-color: #B3A369;
 }
+
+/* For forgot password */
+.forgotPassword {
+    margin-top:8px;
+    font-size: 35px;
+}
