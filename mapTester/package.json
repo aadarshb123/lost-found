@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@googlemaps/markerclusterer": "^2.5.3",
+    "@react-google-maps/api": "^2.20.6"
+  }
+}
