@@ -20,13 +20,20 @@ function Login() {
     navigate('/SignUp'); // Navigate to the sign-up page
   };
 
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault(); // Prevent the default anchor link behavior
+    navigate('/ForgotPassword'); // Navigate to the forgot password page
+  }
+
   return (
     <div className="background">
-      <img src="src/assets/Designer copy.png" alt="Designer" className="logo" />
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="login-container">
-        <h1>Log In</h1>
+        <div className="header">
+          <h1>Log In</h1>
+          <img src="src/assets/bee.png" alt="Designer" className="logo" />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">GT Email</label>
@@ -49,7 +56,7 @@ function Login() {
             />
           </div>
           <div className="forgot-password">
-            <a href="#">Forgot Password</a>
+            <a href="#" onClick={handleForgotPasswordClick}>Forgot Password</a>
           </div>
           <button type="submit" className="login-btn">Continue</button>
         </form>

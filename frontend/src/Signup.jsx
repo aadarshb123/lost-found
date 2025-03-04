@@ -23,11 +23,13 @@ function SignUp() {
 
   return (
     <div className="background">
-      <img src="src/assets/Designer copy.png" alt="Designer" className="logo" />
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="login-container">
+      <div className="header">
         <h1>Sign Up</h1>
+        <img src="src/assets/bee.png" alt="Designer" className="logo" />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
@@ -59,7 +61,7 @@ function SignUp() {
               required
             />
           </div>
-          <button type="submit" className="login-btn">Create an Account</button>
+          <button type="submit" className="login-btn">Continue</button>
         </form>
         <div className="create-account">
           <p>

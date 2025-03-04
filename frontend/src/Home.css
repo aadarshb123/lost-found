@@ -1,0 +1,155 @@
+/* src/Home.css */
+
+
+
+
+
+/* Gold and Blue Shapes for Background */
+.goldshape {
+    height: 37rem;
+    width: 37rem;
+    flex-shrink: 0;
+    top: 0%;
+    left: 10%;
+    border-radius: 40px;
+    background: rgba(183, 154, 12, 0.76);
+    filter: blur(140px);
+}
+
+.blueshape {
+    width: 35rem;
+    height: 35rem;
+    flex-shrink: 0;
+    border-radius: 40px;
+    bottom: 0%;
+    right: 10%;
+    background: #003057;
+    filter: blur(140px);
+}
+
+.goldshape, .blueshape {
+    position: absolute;
+    transform: scale(1.1);
+    z-index: -1; /* Ensure these stay behind */
+}
+
+/* Home Page Box Styling */
+.homeBox {
+    width: 30rem;
+    height: 37rem;
+    padding: 0.5rem 2rem 0rem 2rem;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, .95);
+    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    z-index: 1;
+    position: relative;
+}
+
+/* Headings */
+h1 {
+    font-weight: 100; /* Slightly bolder for emphasis */
+    font-size: 1rem; /* Increase size for visibility */
+    opacity: 1;
+    margin-top: 0px;
+    margin-bottom: 0.5rem;
+}
+
+
+h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0%;
+    margin-top: 1rem; /* Corrected missing value */
+}
+
+
+/* Introductory Text */
+.introText {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #003057;
+    margin-bottom: 1.5rem;
+}
+
+.hl {
+    color: #B3A369;
+    font-weight: 600;
+}
+/* Get Started Buttons Container */
+.getStartedButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 3.5rem 0 0 0;
+}
+
+.getStarted {
+    margin: 0 0 4px 0;
+    font-weight: 500;
+    font-size: 1.4rem;
+}
+
+/* Button Styling */
+button {
+    width: 60%;
+    opacity: 1;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    display: block;
+    
+}
+
+.bee {
+    position: absolute;
+    width: 70px; /* Adjust bee size */
+    height: auto;
+    transition: top 10s ease-in-out, left 10s ease-in-out; /* Smooth infinite movement */
+    z-index: 0; /* Keeps bees above background but below content */
+    pointer-events: none; /* Prevents bees from blocking clicks */
+}
+
+
+
+
+.signupButton {
+    background-color: #003057;
+}
+
+.loginButton {
+    background-color: #B3A369;
+}
+
+.loginButton:hover {
+    background-color: #f3b72b;
+}
+
+.signupButton:hover {
+    background-color: #005498;
+}
+
+
+/* List styling */
+ul {
+    text-align: left;
+    margin-top: 40px;;
+    color: #003057;
+    
+    
+}
+
+.hoverable, h1 {
+    cursor: pointer;
+    transition: color 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    color:#003057;
+    font-weight: bold;
+}
+
+.hoverable:hover, h1:hover, h2:hover {
+    color: #B3A369;
+    opacity: 1;
+}
