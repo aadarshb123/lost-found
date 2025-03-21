@@ -1,12 +1,21 @@
 import Item from "../models/item.model.js";
+import mongoose from "mongoose";
 
 export const updateItem = async (req, res) => {
   try {
-    const updateItem = await Item.findByIdAndUpdate(Req.params.id, req.body, {
+    // Check if the ID is valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ID format",
+      });
+    }
+
+    const updateItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
 
-    if (!updatedItem)
+    if (!updateItem)
       return res
         .status(404)
         .json({ success: false, message: "Item not found" });
@@ -14,7 +23,7 @@ export const updateItem = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Item updated successfully",
-      data: updatedItem,
+      data: updateItem,
     });
   } catch (error) {
     res.status(500).json({
@@ -39,6 +48,14 @@ export const createItem = async (req, res) => {
 //delete item
 export const deleteItem = async (req, res) => {
   try {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ID format",
+      });
+    }
+    
     const deletedItem = await Item.findByIdAndDelete(req.params.id);
 
     if (!deletedItem)
@@ -76,7 +93,7 @@ export const getItems = async (req, res) => {
       query.itemType = itemType; // Filters by item type
     }
     if (location) {
-      query.location = new RegExp(location, "i"); // Case-insensitive search for location
+      query.location = new RegExp(location, "i"); // Case-insensitive search for location, currently uses pattern matching and cul == culc so fix later if needed
     }
     if (status) {
       query.status = status; // Filters by status if provided

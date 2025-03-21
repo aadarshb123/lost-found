@@ -15,7 +15,6 @@ const itemSchema = new mongoose.Schema({
     required: true,
     Enum: ["electronics", "clothing", "personal", "other"],
   },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }, //for updating item
 });
