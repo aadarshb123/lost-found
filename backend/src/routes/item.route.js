@@ -1,16 +1,16 @@
 import express from "express";
 import {
-  updatedItem,
+  updateItem,
   createItem,
-  deletedItem,
+  deleteItem,
   getItems,
 } from "../controllers/item.controller.js";
 
 const router = express.Router();
 
-router.put("/items/:id", updateItem);
-router.post("/items", createItem);
-router.delete("/items/:id", deleteItem);
-router.get("/items", getItems);
+router.put("/updateItem/:id", updateItem);
+router.post("/createItem", createItem);
+router.delete("/deleteItems/:id", deleteItem);
+router.get("/getItems", getItems);
 
 export default router;
