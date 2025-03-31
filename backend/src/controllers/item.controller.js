@@ -1,7 +1,8 @@
 import Item from "../models/item.model.js";
 import mongoose from "mongoose";
+import cloudinary from "../lib/cloudinary.js";
 
-// Update item (with ownership check)
+// Update item (with ownership check and optional image update)
 export const updateItem = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -10,6 +11,8 @@ export const updateItem = async (req, res) => {
         message: "Invalid ID format",
       });
     }
+
+    const { image, ...rest } = req.body;
 
     const item = await Item.findById(req.params.id);
     if (!item) {
@@ -22,9 +25,22 @@ export const updateItem = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
 
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    let imageUrl = item.imageUrl;
+
+    if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image, {
+        folder: "items",
+        resource_type: "image",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      });
+      imageUrl = uploadResponse.secure_url;
+    }
+
+    const updatedItem = await Item.findByIdAndUpdate(
+      req.params.id,
+      { ...rest, imageUrl },
+      { new: true }
+    );
 
     res.status(200).json({
       success: true,
@@ -40,12 +56,21 @@ export const updateItem = async (req, res) => {
   }
 };
 
-// Create item with user assignment
+// Create item with image upload and user assignment
 export const createItem = async (req, res) => {
   try {
+    const { image, ...rest } = req.body;
+
+    const uploadResponse = await cloudinary.uploader.upload(image, {
+      folder: "items",
+      resource_type: "image",
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    });
+
     const item = new Item({
-      ...req.body,
-      user: req.user._id, // assign logged-in user
+      ...rest,
+      imageUrl: uploadResponse.secure_url,
+      user: req.user._id,
     });
 
     await item.save();
