@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 
 /*
 onFilterChange is a callback function passed as a prop to the FilterBar component. 
@@ -28,31 +29,28 @@ const FilterBar = ({ onFilterChange }) => {
     Tailwind CSS includes pre-built classes which allow you to build quickly.
     */
     return (
-        <div className="flex space-x-4 p-4 bg-gray-100">
-          {/* Dropdown for status */}
-          <select
-            onChange={handleStatusChange}
-            className="border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            <option value="">All Statuses</option>
-            <option value="lost">Lost</option>
-            <option value="found">Found</option>
-            <option value="claimed">Claimed</option>
-          </select>
-    
-          {/* Dropdown for item type */}
-          <select
-            onChange={handleItemTypeChange}
-            className="border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            <option value="">All Item Types</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="personal">Personal</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      );
+      <div className="flex gap-4 justify-center mb-4">
+        <select
+          onChange={(e) => onFilterChange({ filter: 'status', value: e.target.value })}
+          className="w-40 p-2 rounded border border-gray-300 text-lg"
+        >
+          <option value="">All Statuses</option>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
+          <option value="claimed">Claimed</option>
+        </select>
+        <select
+          onChange={(e) => onFilterChange({ filter: 'itemType', value: e.target.value })}
+          className="w-40 p-2 rounded border border-gray-300 text-lg"
+        >
+          <option value="">All Item Types</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing">Clothing</option>
+          <option value="personal">Personal</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    );
 }
 export default FilterBar;
 // This code defines a FilterBar component that allows users to filter items based on their status and type.

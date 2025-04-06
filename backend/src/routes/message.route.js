@@ -5,7 +5,7 @@ import {
   getUsersForSidebar,
   markMessagesAsSeen,
 } from "../controllers/message.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 router.get("/users", protectRoute, getUsersForSidebar);
