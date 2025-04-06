@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import "./FilterBar.css";
 
 /*
 onFilterChange is a callback function passed as a prop to the FilterBar component. 
@@ -7,24 +7,6 @@ Its purpose is to notify the parent component whenever the user selects a new fi
 allowing the parent to update its state and adjust the displayed data accordingly.
 */
 const FilterBar = ({ onFilterChange }) => {
-
-    /*
-    The handleStatusChange is an event handler. It listens to changes in the status filter (e.g., "lost", "found", "claimed").
-    onFilterChange is called after detecting a change. It sends an object containing the new status (e.target.value) back to parent.
-    The parent is Home.jsx or the component that uses FilterBar.
-    */
-    const handleStatusChange = (e) => {
-        onFilterChange({ filter: "status", value: e.target.value });
-    };
-
-    /*
-    The handleStatusChange is an event handler. It listens to changes in the item filter.
-    onFilterChange is called after detecting a change. It sends an object containing the new itemType (e.target.value) back to parent.
-    */
-    const handleItemTypeChange = (e) => {
-        onFilterChange({ filter: "itemType", value: e.target.value });
-    };
-
     /*
     Tailwind CSS includes pre-built classes which allow you to build quickly.
     */

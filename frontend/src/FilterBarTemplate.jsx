@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FilterBar from './FilterBar';
-import './index.css';
+import './FilterBar.css';
 
 const App = () => {
   const [filters, setFilters] = useState({
@@ -15,7 +15,7 @@ const App = () => {
       if (filters.status) queryParams.append('status', filters.status);
       if (filters.itemType) queryParams.append('itemType', filters.itemType);
       
-      const response = await fetch(`http://localhost:5001/getItems?${queryParams.toString()}`);
+      const response = await fetch(`http://localhost:5001/api/items/getItems?${queryParams.toString()}`);
       const data = await response.json();
       setItems(data.items);
     } catch (error) {
