@@ -1,5 +1,5 @@
 /* src/Login.css */
-.background {
+body .background {
     font-family: "Outfit", serif;
     font-optical-sizing: auto;
     font-weight: 300;
@@ -7,41 +7,40 @@
     z-index: 1;
 }
 
-.logo {
+body .logo {
     position: relative;
-    margin-left:2px;
+    margin-left: 2px;
     z-index: 2;
     filter: blur(0);
     width: 3.4rem;
     height: auto;
 }
 
-.header {
+body .header {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     margin-left: 15px;
 }
 
-
-.login-container {
+body .login-container {
     position: relative;
     width: 350px;
     margin: 0;
     padding: 2rem;
     border-radius: 25px;
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 30px 20px rgba(0, 0, 0, 0.3);
     filter: blur(0);
     z-index: 3;
 }
 
-form {
+body form {
     display: flex;
     flex-direction: column;
 }
 
-.input-group {
+body .input-group {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -49,7 +48,7 @@ form {
     opacity: 1;
 }
 
-label {
+body label {
     margin-top: 1rem;
     margin-bottom: 0.2rem;
     font-size: 1.2rem;
@@ -60,7 +59,7 @@ label {
     font-style: normal;
 }
 
-input {
+body input {
     align-self: center;
     width: 93%;
     padding: 11px;
@@ -72,7 +71,7 @@ input {
     font-family: "Outfit", serif;
 }
 
-button.login-btn {
+body button.login-btn {
     width: 30%;
     padding: 12px;
     opacity: 1;
@@ -87,33 +86,33 @@ button.login-btn {
     display: block;
 }
 
-button.login-btn:hover {
+body button.login-btn:hover {
     background-color: #f3b72b;
 }
 
-.forgot-password {
+body .forgot-password {
     text-align: left;
     width: 100%;
     margin-top: 3px;
 }
 
-.forgot-password a,
-.create-account a,
-.existing-account a {
+body .forgot-password a,
+body .create-account a,
+body .existing-account a {
     color: #B3A369;
     font-size: 14px;
     text-decoration: underline;
     display: inline-block;
 }
 
-.create-account,
-.existing-account {
+body .create-account,
+body .existing-account {
     font-size: 1rem;
     font-weight: 600;
 }
 
 /* Background Shapes */
-.goldshape {
+body .goldshape {
     position: absolute;
     height: 37rem;
     width: 37rem;
@@ -127,7 +126,7 @@ button.login-btn:hover {
     z-index: -1;
 }
 
-.blueshape {
+body .blueshape {
     position: absolute;
     width: 35rem;
     height: 35rem;
@@ -142,7 +141,7 @@ button.login-btn:hover {
 }
 
 /* Headings */
-h1 {
+body h1 {
     font-weight: 700;
     font-size: 3rem;
     opacity: 1;
@@ -150,14 +149,14 @@ h1 {
 }
 
 /* Verification Code Input Fields */
-.verification-code {
+body .verification-code {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
 }
 
-.verification-code input {
+body .verification-code input {
     width: 50px;
     height: 50px;
     font-size: 2rem;
@@ -168,28 +167,28 @@ h1 {
     opacity: 1;
 }
 
-input:focus {
+body input:focus {
     outline: none;
     border-color: #B3A369;
 }
 
 /* For forgot password */
-.forgotPassword {
-    margin-top:8px;
+body .forgotPassword {
+    margin-top: 8px;
     font-size: 35px;
 }
 
-.error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.9rem;
+body .error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
 }
 
-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+body button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }

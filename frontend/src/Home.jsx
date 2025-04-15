@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import beeImage from './assets/bee.png';
 import './Home.css';
@@ -6,6 +6,7 @@ import './Home.css';
 function Home() {
   const navigate = useNavigate();
   const [bees, setBees] = useState([]);
+  const homeBoxRef = useRef(null);
 
   // 🟡 STEP 1: Initialize bees on page load
   useEffect(() => {
@@ -35,6 +36,28 @@ function Home() {
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
+  const handleMouseMove = (e) => {
+    const box = homeBoxRef.current;
+    const rect = box.getBoundingClientRect();
+
+    // Calculate mouse position relative to the box
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Calculate rotation values
+    const rotateX = ((y / rect.height) - 0.5) * 10; 
+    const rotateY = ((x / rect.width) - 0.5) * -10;
+
+    // Apply the transformation
+    box.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleMouseLeave = () => {
+    // Reset the transformation when the mouse leaves
+    const box = homeBoxRef.current;
+    box.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+  };
+
   return (
     <div className="background">
       {/* 🐝 STEP 3: Render bees with smooth movement */}
@@ -53,7 +76,12 @@ function Home() {
       <div className="blueshape"></div>
 
       {/* Main Content */}
-      <div className="homeBox">
+      <div
+        className="homeBox"
+        ref={homeBoxRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
         <h2>Welcome to</h2>
         <h1>GT Lost & Found</h1>
         <p className="introText">

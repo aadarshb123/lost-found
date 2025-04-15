@@ -35,14 +35,21 @@
 
 /* Home Page Box Styling */
 .homeBox {
+    position: relative;
     width: 30rem;
     height: 37rem;
     padding: 0.5rem 2rem 0rem 2rem;
     border-radius: 25px;
-    background: rgba(255, 255, 255, .95);
-    box-shadow: 0px 0px 4px 2px rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 30px 20px rgba(0, 0, 0, 0.3);
     z-index: 1;
-    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Smooth effect */
+    transform-origin: center;
+}
+
+/* Hover Effect for homeBox */
+.homeBox:hover {
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
 }
 
 /* Headings */
@@ -55,11 +62,11 @@ h1 {
 }
 
 
-h2 {
-    font-size: 2rem;
-    font-weight: 400;
-    margin-bottom: 0%;
-    margin-top: 1rem; /* Corrected missing value */
+.homeBox h2 {
+    font-weight: 300;
+    color: #003057;
+    margin-bottom: 0.3rem;
+    font-size: 1.5rem;
 }
 
 
@@ -152,4 +159,141 @@ ul {
 .hoverable:hover, h1:hover, h2:hover {
     color: #B3A369;
     opacity: 1;
+}
+
+/* Hover Card Effect */
+.box {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 2rem auto;
+}
+
+.box-contents {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url(https://source.unsplash.com/300x300/?nature) 50% 50% / cover no-repeat;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  transition: 0.5s ease;
+}
+
+.hover-point {
+  position: absolute;
+  z-index: 2;
+  width: calc(100% / 3);
+  height: calc(100% / 3);
+}
+
+.hover-point:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.hover-point:nth-child(2) {
+  top: 0;
+  left: calc(100% / 3);
+}
+
+.hover-point:nth-child(3) {
+  top: 0;
+  right: 0;
+}
+
+.hover-point:nth-child(4) {
+  top: calc(100% / 3);
+  left: 0;
+}
+
+.hover-point:nth-child(5) {
+  top: calc(100% / 3);
+  right: 0;
+}
+
+.hover-point:nth-child(6) {
+  bottom: 0;
+  left: 0;
+}
+
+.hover-point:nth-child(7) {
+  bottom: 0;
+  left: calc(100% / 3);
+}
+
+.hover-point:nth-child(8) {
+  bottom: 0;
+  right: 0;
+}
+
+.hover-point:nth-child(1):hover ~ .box-contents {
+  box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: right top;
+  transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) rotateZ(2deg);
+}
+
+.hover-point:nth-child(2):hover ~ .box-contents {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: center top;
+  transform: perspective(1000px) rotateX(10deg);
+}
+
+.hover-point:nth-child(3):hover ~ .box-contents {
+  box-shadow: -15px 15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: left top;
+  transform: perspective(1000px) rotateX(10deg) rotateY(10deg) rotateZ(-2deg);
+}
+
+.hover-point:nth-child(4):hover ~ .box-contents {
+  box-shadow: 15px 5px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: left center;
+  transform: perspective(1000px) rotateY(-10deg);
+}
+
+.hover-point:nth-child(5):hover ~ .box-contents {
+  box-shadow: -15px 5px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: right center;
+  transform: perspective(1000px) rotateY(10deg);
+}
+
+.hover-point:nth-child(6):hover ~ .box-contents {
+  box-shadow: 15px -15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: right bottom;
+  transform: perspective(1000px) rotateX(-10deg) rotateY(-10deg) rotateZ(-2deg);
+}
+
+.hover-point:nth-child(7):hover ~ .box-contents {
+  box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: center bottom;
+  transform: perspective(1000px) rotateX(-10deg);
+}
+
+.hover-point:nth-child(8):hover ~ .box-contents {
+  box-shadow: -15px -15px 50px rgba(0, 0, 0, 0.3);
+  transform-origin: left bottom;
+  transform: perspective(1000px) rotateX(-10deg) rotateY(10deg) rotateZ(2deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .homeBox {
+        width: 90%;
+        height: auto;
+        padding: 1rem;
+        margin: 0 auto; /* Center the box */
+    }
+
+    .goldshape, .blueshape {
+        width: 20%;
+        height: 20%;
+    }
+
+    h1 {
+        font-size: 2.5rem; /* Adjusted for smaller screens */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Adjusted for smaller screens */
+    }
 }

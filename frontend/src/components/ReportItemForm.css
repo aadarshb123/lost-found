@@ -36,7 +36,7 @@
   color: #000;
 }
 
-h2 {
+.report-form h2 {
   color: #003057;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
@@ -97,4 +97,4 @@ textarea {
     width: 95%;
     padding: 1.5rem;
   }
-} 
+}
