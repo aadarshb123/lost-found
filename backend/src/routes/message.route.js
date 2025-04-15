@@ -5,12 +5,12 @@ import {
   getUsersForSidebar,
   markMessagesAsSeen,
 } from "../controllers/message.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 router.get("/users", protectRoute, getUsersForSidebar);
-router.get("/:id", protectRoute, getMessages);
-router.post("/:id", protectRoute, sendMessage);
-router.patch("/seen/:id", protectRoute, markMessagesAsSeen); //for marking mesages as seen
+router.get("/:otherUserId", protectRoute, getMessages);
+router.post("/send/:receiverId", protectRoute, sendMessage);
+router.post("/markSeen/:otherUserId", protectRoute, markMessagesAsSeen);
 
 export default router;

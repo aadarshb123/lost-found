@@ -1,23 +1,43 @@
 // src/SignUp.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { signupUser } from './utils/api';
 import './Login.css'; // Reuse Login.css for SignUp styling
 
 function SignUp() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize the navigate function
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle sign-up logic here
+    setError('');
+
+    // Validate GT email
+    if (!email.endsWith('@gatech.edu')) {
+      setError('Please use your Georgia Tech email address');
+      return;
+    }
+
+    // Validate password match
     if (password !== confirmPassword) {
-      alert("Passwords don't match!");
-    } else {
-      console.log('Email:', email, 'Password:', password);
-      // Navigate to the verification page after successful sign-up
-      navigate('/verification'); // Navigate to the verification page
+      setError('Passwords do not match');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await signupUser(name, email, password);
+      navigate('/verification');
+    } catch (err) {
+      setError(err.message || 'Signup failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -26,19 +46,33 @@ function SignUp() {
       <div className="goldshape"></div>
       <div className="blueshape"></div>
       <div className="login-container">
-      <div className="header">
-        <h1>Sign Up</h1>
-        <img src="src/assets/bee.png" alt="Designer" className="logo" />
+        <div className="header">
+          <h1>Sign Up</h1>
+          <img src="src/assets/bee.png" alt="Designer" className="logo" />
         </div>
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="email">GT Email</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
+              placeholder="username@gatech.edu"
             />
           </div>
           <div className="input-group">
@@ -49,6 +83,7 @@ function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className="input-group">
@@ -59,9 +94,12 @@ function SignUp() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className="login-btn">Continue</button>
+          <button type="submit" className="login-btn" disabled={isLoading}>
+            {isLoading ? 'Creating Account...' : 'Continue'}
+          </button>
         </form>
         <div className="create-account">
           <p>

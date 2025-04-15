@@ -2,21 +2,47 @@ import mongoose from "mongoose";
 
 //item schema:
 const itemSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  location: { type: String, required: true },
-  dateLost: { type: Date },
-  dateFound: { type: Date },
-  imageUrl: { type: String, required: true },
-  status: { type: String, required: true, Enum: ["lost", "found", "claimed"] },
-  itemType: {
+  type: {
     type: String,
     required: true,
-    Enum: ["electronics", "clothing", "personal", "other"],
+    enum: ['lost', 'found']
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }, //for updating item
+  description: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true
+  },
+  location: {
+    building: {
+      type: String,
+      required: true
+    },
+    coordinates: {
+      lat: Number,
+      lng: Number
+    }
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['electronics', 'clothing', 'accessories', 'books', 'documents', 'other']
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['open', 'closed', 'in_progress'],
+    default: 'open'
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
 const Item = mongoose.model("Item", itemSchema);
