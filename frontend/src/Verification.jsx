@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import './Login.css'; // Reuse Login.css for styling
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './Login.css';
 
 function Verification() {
   const [code, setCode] = useState(['', '', '', '']);
-  const inputRefs = [React.createRef(), React.createRef(), React.createRef(), React.createRef()]; // Store references to input elements
+  const inputRefs = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+  const navigate = useNavigate();
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -11,7 +14,6 @@ function Verification() {
     newCode[index] = value;
     setCode(newCode);
 
-    // Move focus to the next input field if a digit is entered
     if (value && index < 3) {
       inputRefs[index + 1].current.focus();
     }
@@ -23,12 +25,39 @@ function Verification() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle verification logic here, for now, we just log the code
     const enteredCode = code.join('');
     console.log('Entered Code:', enteredCode);
-    // Add your verification logic here, like calling an API for validation
+  
+    try {
+      const res = await axios.get(
+        'http://localhost:5000/api/auth/verify-email',
+        {
+          withCredentials: true, // 🔥 this sends the login cookie (JWT)
+        }
+      );
+  
+      alert(res.data.message);
+      navigate('/login');
+    } catch (err) {
+      console.error('Verification failed:', err.response?.data?.message || err.message);
+      alert('Verification failed. Please try again.');
+    }
+  };
+  
+
+    try {
+      const res = await axios.get('http://localhost:5000/api/auth/verify-email', {
+        withCredentials: true,
+      });
+
+      alert(res.data.message);
+      navigate('/login');
+    } catch (err) {
+      console.error('Verification failed:', err.response?.data?.message || err.message);
+      alert('Verification failed. Please try again.');
+    }
   };
 
   return (
@@ -50,7 +79,7 @@ function Verification() {
                 onKeyDown={(e) => handleBackspace(e, index)}
                 maxLength="1"
                 required
-                ref={inputRefs[index]} // Set ref for each input
+                ref={inputRefs[index]}
               />
             ))}
           </div>

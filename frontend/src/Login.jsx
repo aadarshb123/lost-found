@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook from React Router
-import './Login.css'; // For custom styling
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // 👈 Axios added
+import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Email:', email, 'Password:', password);
 
-    // Navigate to the dashboard or home page after login (if needed)
+    try {
+      const res = await axios.post(
+        'http://localhost:5000/api/auth/login',
+        { email, password },
+        { withCredentials: true }
+      );
+
+      console.log('Login Success:', res.data);
+      navigate('/'); // Navigate to home or dashboard
+    } catch (err) {
+      console.error('Login Error:', err.response?.data?.message || err.message);
+      alert('Login failed. Please check your email and password.');
+    }
   };
 
   const handleSignUpClick = (e) => {
-    e.preventDefault(); // Prevent the default anchor link behavior
-    navigate('/SignUp'); // Navigate to the sign-up page
+    e.preventDefault();
+    navigate('/SignUp');
   };
 
   const handleForgotPasswordClick = (e) => {
-    e.preventDefault(); // Prevent the default anchor link behavior
-    navigate('/ForgotPassword'); // Navigate to the forgot password page
-  }
+    e.preventDefault();
+    navigate('/ForgotPassword');
+  };
 
   return (
     <div className="background">

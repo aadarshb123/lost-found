@@ -97,24 +97,45 @@ export const logout = (req, res) => {
   }
 };
 
-// Verify Email
+// Demo version: Verification Always succeeds. Change back later. Commented out actual logic.
 export const verifyEmail = async (req, res) => {
   try {
-    const { token } = req.query;
+    const users = await User.find({ isVerified: false });
 
-    const user = await User.findOne({ verificationToken: token });
-    if (!user)
-      return res.status(400).json({ message: "Invalid or expired token" });
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No unverified users found" });
+    }
 
-    user.isVerified = true;
-    user.verificationToken = null;
-    await user.save();
+    const latestUser = users[users.length - 1];
+    latestUser.isVerified = true;
+    latestUser.verificationToken = null;
+    await latestUser.save();
 
-    res.json({ message: "Email verified successfully! You can now log in." });
+    res.status(200).json({ message: "Demo: User verified without real token." });
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
+
+// // Verify Email
+// export const verifyEmail = async (req, res) => {
+//   try {
+//     const { token } = req.query;
+
+//     const user = await User.findOne({ verificationToken: token });
+//     if (!user)
+//       return res.status(400).json({ message: "Invalid or expired token" });
+
+//     user.isVerified = true;
+//     user.verificationToken = null;
+//     await user.save();
+
+//     res.json({ message: "Email verified successfully! You can now log in." });
+//   } catch (err) {
+//     res.status(500).json({ message: "Server Error", error: err.message });
+//   }
+// };
+
 
 // Auth check
 export const checkAuth = (req, res) => {
