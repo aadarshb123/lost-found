@@ -16,13 +16,29 @@
 
 .top-bar {
   background-color: white;
-  padding: 1rem;
+  padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 72px;
   box-sizing: border-box;
+  border-bottom: 3px solid #B3A369;
+  position: relative;
+  z-index: 10;
+}
+
+.search-and-filters {
+  flex: 1;
+  margin-right: 2rem;
+  max-width: 1000px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .filter-section {
@@ -49,18 +65,36 @@
   background: #B3A369;
 }
 
+.messages-button, .logout-button {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.messages-button {
+  background: #003057;
+  color: white;
+}
+
+.messages-button:hover {
+  background: #004880;
+  transform: translateY(-1px);
+}
+
 .logout-button {
   background: #B3A369;
   color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
 }
 
 .logout-button:hover {
   background: #8c7f4f;
+  transform: translateY(-1px);
 }
 
 .map-wrapper {
@@ -204,24 +238,4 @@
 
 .report-button:hover {
   background-color: #8c7f4f;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.messages-button {
-  background: #003057;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.messages-button:hover {
-  background: #004880;
 }

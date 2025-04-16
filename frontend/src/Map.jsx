@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, InfoWindow, Marker } from '@react-google-maps/ap
 import { useNavigate } from 'react-router-dom';
 import ReportItemForm from './components/ReportItemForm';
 import ItemDetailOverlay from './components/ItemDetailOverlay';
+import Chat from './components/Chat';
+import FilterBar from './FilterBar';
 import { createItem, getItems } from './utils/api';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import './Map.css';
@@ -17,10 +19,12 @@ const Map = () => {
   const [selectedPin, setSelectedPin] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [showReportForm, setShowReportForm] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [markerClusterer, setMarkerClusterer] = useState(null);
+  const [showChat, setShowChat] = useState(false);
   const mapRef = useRef(null);
   const markersRef = useRef({});
   const navigate = useNavigate();
@@ -153,6 +157,29 @@ const Map = () => {
     setMarkerClusterer(clusterer);
   };
 
+  const filterPins = (filter) => {
+    if (filter.filter === 'search') {
+      setSearchQuery(filter.value.toLowerCase());
+    } else if (filter.filter === 'status') {
+      setActiveFilter(filter.value);
+    }
+  };
+
+  const getFilteredPins = () => {
+    return pins.map(pin => {
+      const filteredItems = pin.items.filter(item => {
+        const matchesStatus = activeFilter === 'all' || item.type === activeFilter;
+        const matchesSearch = !searchQuery || 
+          item.description.toLowerCase().includes(searchQuery);
+        return matchesStatus && matchesSearch;
+      });
+      return {
+        ...pin,
+        items: filteredItems
+      };
+    });
+  };
+
   useEffect(() => {
     const createMarkers = async () => {
       if (isMapLoaded && mapRef.current && markerClusterer && window.google) {
@@ -164,7 +191,8 @@ const Map = () => {
         const markerIcons = getMarkerIcons();
         if (!markerIcons) return;
 
-        pins.forEach(pin => {
+        const filteredPins = getFilteredPins();
+        filteredPins.forEach(pin => {
           const hasLostItems = pin.items.some(item => item.type === 'lost');
           const hasFoundItems = pin.items.some(item => item.type === 'found');
           
@@ -203,14 +231,10 @@ const Map = () => {
     };
 
     createMarkers();
-  }, [isMapLoaded, pins, markerClusterer]);
+  }, [isMapLoaded, pins, markerClusterer, activeFilter, searchQuery]);
 
   const handleLogout = () => {
     navigate('/login');
-  };
-
-  const filterPins = (filter) => {
-    setActiveFilter(filter);
   };
 
   const handleReportSubmit = async (formData) => {
@@ -241,28 +265,11 @@ const Map = () => {
   return (
     <div className="map-container">
       <div className="top-bar">
-        <div className="filter-section">
-          <button 
-            className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
-            onClick={() => filterPins('all')}
-          >
-            All Items
-          </button>
-          <button 
-            className={`filter-button ${activeFilter === 'lost' ? 'active' : ''}`}
-            onClick={() => filterPins('lost')}
-          >
-            Lost Items
-          </button>
-          <button 
-            className={`filter-button ${activeFilter === 'found' ? 'active' : ''}`}
-            onClick={() => filterPins('found')}
-          >
-            Found Items
-          </button>
+        <div className="search-and-filters">
+          <FilterBar onFilterChange={filterPins} />
         </div>
         <div className="action-buttons">
-          <button className="messages-button" onClick={() => navigate('/messages')}>
+          <button className="messages-button" onClick={() => setShowChat(true)}>
             Messages
           </button>
           <button className="logout-button" onClick={handleLogout}>
@@ -350,6 +357,10 @@ const Map = () => {
           item={selectedItem}
           onClose={() => setSelectedItem(null)}
         />
+      )}
+
+      {showChat && (
+        <Chat onClose={() => setShowChat(false)} />
       )}
     </div>
   );

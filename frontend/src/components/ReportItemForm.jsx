@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './ReportItemForm.css';
 
 const ReportItemForm = ({ onSubmit, selectedLocation, onClose }) => {
@@ -9,6 +9,20 @@ const ReportItemForm = ({ onSubmit, selectedLocation, onClose }) => {
     category: 'other',
     status: 'open'
   });
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +42,7 @@ const ReportItemForm = ({ onSubmit, selectedLocation, onClose }) => {
 
   return (
     <div className="report-form-container">
-      <div className="report-form">
+      <div className="report-form" ref={formRef}>
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>{formData.type === 'lost' ? 'Report Lost Item' : 'Report Found Item'}</h2>
         

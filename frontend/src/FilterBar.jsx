@@ -24,15 +24,23 @@ const FilterBar = ({ onFilterChange }) => {
         onFilterChange({ filter: "itemType", value: e.target.value });
     };
 
+    const handleSearchChange = (e) => {
+        onFilterChange({ filter: "search", value: e.target.value });
+    };
+
     /*
     Tailwind CSS includes pre-built classes which allow you to build quickly.
     */
     return (
-        <div className="flex space-x-4 p-4 bg-gray-100">
-          {/* Dropdown for status */}
+        <div className="flex items-center gap-4 w-full">
+          {/* Status dropdown */}
           <select
             onChange={handleStatusChange}
-            className="border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+            className="h-10 px-3 bg-gray-50 border-2 border-[#003057] rounded-lg
+                     text-[#003057] font-medium text-sm
+                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
+                     focus:bg-white cursor-pointer hover:border-[#B3A369]
+                     transition-all duration-200 w-[130px]"
           >
             <option value="">All Statuses</option>
             <option value="lost">Lost</option>
@@ -40,10 +48,14 @@ const FilterBar = ({ onFilterChange }) => {
             <option value="claimed">Claimed</option>
           </select>
     
-          {/* Dropdown for item type */}
+          {/* Item type dropdown */}
           <select
             onChange={handleItemTypeChange}
-            className="border rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
+            className="h-10 px-3 bg-gray-50 border-2 border-[#003057] rounded-lg
+                     text-[#003057] font-medium text-sm
+                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
+                     focus:bg-white cursor-pointer hover:border-[#B3A369]
+                     transition-all duration-200 w-[140px]"
           >
             <option value="">All Item Types</option>
             <option value="electronics">Electronics</option>
@@ -51,8 +63,20 @@ const FilterBar = ({ onFilterChange }) => {
             <option value="personal">Personal</option>
             <option value="other">Other</option>
           </select>
+
+          {/* Search bar */}
+          <input
+            type="text"
+            placeholder="Search lost & found items..."
+            onChange={handleSearchChange}
+            className="flex-1 h-10 px-4 bg-gray-50 border-2 border-[#003057] rounded-lg 
+                     text-[#003057] placeholder-gray-400 text-sm
+                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
+                     focus:bg-white transition-all duration-200"
+          />
         </div>
-      );
+    );
 }
+
 export default FilterBar;
 // This code defines a FilterBar component that allows users to filter items based on their status and type.
