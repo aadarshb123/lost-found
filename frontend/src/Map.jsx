@@ -73,13 +73,26 @@ const Map = () => {
 
   useEffect(() => {
     const initialPins = [
-      { id: 1, lat: 33.772509, lng: -84.392861, building: 'Bobby Dodd Stadium', items: [] },
-      { id: 2, lat: 33.773971, lng: -84.398806, building: 'Student Center', items: [] },
-      { id: 3, lat: 33.77471, lng: -84.39629, building: 'CULC', items: [] },
-      { id: 4, lat: 33.77738, lng: -84.39622, building: 'Klaus', items: [] },
-      { id: 5, lat: 33.77543, lng: -84.40138, building: 'Instructional Center', items: [] },
-      { id: 6, lat: 33.77564, lng: -84.40410, building: 'CRC', items: [] },
-      { id: 7, lat: 33.77001, lng: -84.39148, building: 'North Ave Apartments', items: [] },
+      { id: 1, lat: 33.7724, lng: -84.3929, building: 'Bobby Dodd Stadium', items: [] },
+      { id: 2, lat: 33.7746, lng: -84.3985, building: 'Student Center', items: [] },
+      { id: 3, lat: 33.7749, lng: -84.3964, building: 'CULC', items: [] },
+      { id: 4, lat: 33.7772, lng: -84.3963, building: 'Klaus', items: [] },
+      { id: 5, lat: 33.7754, lng: -84.4014, building: 'Instructional Center', items: [] },
+      { id: 6, lat: 33.7757, lng: -84.4033, building: 'CRC', items: [] },
+      { id: 7, lat: 33.7712, lng: -84.3914, building: 'North Ave Apartments', items: [] },
+      { id: 8, lat: 33.7721, lng: -84.3947, building: 'Tech Tower', items: [] },
+      { id: 9, lat: 33.7744, lng: -84.3957, building: 'Price Gilbert Library', items: [] },
+      { id: 10, lat: 33.7736, lng: -84.3957, building: 'Skiles', items: [] },
+      { id: 11, lat: 33.7761, lng: -84.3973, building: 'Van Leer', items: [] },
+      { id: 12, lat: 33.7773, lng: -84.3978, building: 'College of Computing', items: [] },
+      { id: 13, lat: 33.7764, lng: -84.4000, building: 'MRDC', items: [] },
+      { id: 14, lat: 33.7741, lng: -84.3989, building: 'Student Center Parking', items: [] },
+      { id: 15, lat: 33.7786, lng: -84.4043, building: 'West Campus Housing', items: [] },
+      { id: 16, lat: 33.7731, lng: -84.3919, building: 'East Campus Housing', items: [] },
+      { id: 17, lat: 33.7757, lng: -84.4033, building: 'Campus Recreation Center', items: [] },
+      { id: 18, lat: 33.7746, lng: -84.3985, building: 'Student Center Food Court', items: [] },
+      { id: 19, lat: 33.7764, lng: -84.3892, building: 'Tech Square', items: [] },
+      { id: 20, lat: 33.7787, lng: -84.3877, building: 'Midtown', items: [] }
     ];
     setPins(initialPins);
   }, []);
