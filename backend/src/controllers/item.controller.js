@@ -126,3 +126,27 @@ export const getItems = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
+
+export const getUserForItem = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).populate('userId', 'name email');
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    res.json(item.userId);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getItem = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).populate('userId', 'name email');
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

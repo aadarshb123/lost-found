@@ -6,6 +6,7 @@ import SignUp from './SignUp';
 // import Verification from './Verification'; // Remove Verification component
 import ForgotPassword from './ForgotPassword';
 import Map from './Map';
+import Chat from './components/Chat';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         {/* <Route path="/verification" element={<Verification />} /> */}
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/Map" element={<Map />} />
+        <Route path="/messages" element={<Chat />} />
       </Routes>
     </Router>
   );

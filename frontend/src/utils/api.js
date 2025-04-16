@@ -86,4 +86,27 @@ export const createItem = async (itemData) => {
     console.error('Create item error:', error);
     throw error;
   }
+};
+
+export const getItems = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/items/getItems`, {
+      method: 'GET',
+      headers: {
+        ...defaultHeaders,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch items');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get items error:', error);
+    throw error;
+  }
 }; 

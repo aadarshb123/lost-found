@@ -1,9 +1,11 @@
 import express from "express";
 import {
-  updateItem,
   createItem,
-  deleteItem,
   getItems,
+  getItem,
+  updateItem,
+  deleteItem,
+  getUserForItem
 } from "../controllers/item.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
@@ -16,5 +18,8 @@ router.delete("/deleteItem/:id", protectRoute, deleteItem);
 
 // protect getItems if you want to show only user-specific items
 router.get("/getItems", getItems); // or protectRoute if needed
+
+router.get("/:id", getItem);
+router.get("/:id/user", getUserForItem);
 
 export default router;

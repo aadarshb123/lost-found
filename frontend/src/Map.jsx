@@ -2,18 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoogleMap, LoadScript, InfoWindow, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import ReportItemForm from './components/ReportItemForm';
-import { createItem } from './utils/api';
+import ItemDetailOverlay from './components/ItemDetailOverlay';
+import { createItem, getItems } from './utils/api';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import './Map.css';
 
 const googleMapsApiKey = 'AIzaSyDrl5HtC_bvZ1Df3Tb5lCrhS6-DHE5PbR4';
 
-// Define libraries as a static constant
-const LIBRARIES = ['marker', 'visualization'];
+// Define libraries outside the component to prevent recreation on each render
+const libraries = ['marker', 'visualization'];
 
 const Map = () => {
   const [pins, setPins] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [showReportForm, setShowReportForm] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -77,6 +79,30 @@ const Map = () => {
     ];
     setPins(initialPins);
   }, []);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await getItems();
+        const items = response.items;
+        
+        // Update pins with items
+        setPins(prevPins => prevPins.map(pin => {
+          const pinItems = items.filter(item => 
+            item.location.building === pin.building
+          );
+          return {
+            ...pin,
+            items: pinItems
+          };
+        }));
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
+    fetchItems();
+  }, []); // Run once when component mounts
 
   const handleMarkerClick = (pin) => {
     setSelectedPin(pin);
@@ -208,6 +234,10 @@ const Map = () => {
     }
   };
 
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+  };
+
   return (
     <div className="map-container">
       <div className="top-bar">
@@ -231,12 +261,17 @@ const Map = () => {
             Found Items
           </button>
         </div>
-        <button className="logout-button" onClick={handleLogout}>
-          Logout
-        </button>
+        <div className="action-buttons">
+          <button className="messages-button" onClick={() => navigate('/messages')}>
+            Messages
+          </button>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
       <div className="map-wrapper">
-        <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={LIBRARIES}>
+        <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
             mapContainerStyle={containerStyle} 
             center={center} 
@@ -251,19 +286,14 @@ const Map = () => {
             }}
           >
             {selectedPin && (
-              <InfoWindow 
+              <InfoWindow
                 position={{ lat: selectedPin.lat, lng: selectedPin.lng }}
                 onCloseClick={() => setSelectedPin(null)}
               >
-                <div style={{ padding: '15px', minWidth: '200px' }}>
-                  <h3 style={{ 
-                    marginBottom: '15px', 
-                    color: '#003057',
-                    fontSize: '18px'
-                  }}>
-                    {selectedPin.building}
-                  </h3>
+                <div className="info-window">
+                  <h3>{selectedPin.building}</h3>
                   <button 
+                    className="report-button"
                     onClick={() => {
                       setSelectedLocation({
                         building: selectedPin.building,
@@ -271,42 +301,31 @@ const Map = () => {
                       });
                       setShowReportForm(true);
                     }}
-                    style={{
-                      backgroundColor: '#B3A369',
-                      color: 'white',
-                      padding: '10px 20px',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      width: '100%',
-                      fontSize: '16px',
-                      marginBottom: '15px'
-                    }}
                   >
                     Report Lost/Found Item
                   </button>
-                  {selectedPin.items && selectedPin.items.length > 0 && (
-                    <>
-                      <h4 style={{ color: '#003057', marginBottom: '10px' }}>Recent Items:</h4>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {selectedPin.items.map((item, idx) => (
-                          <li key={idx} style={{ 
-                            marginBottom: '10px',
-                            padding: '8px',
-                            backgroundColor: '#f5f5f5',
-                            borderRadius: '4px'
-                          }}>
-                            <strong>{item.type === 'lost' ? 'Lost:' : 'Found:'} {item.description}</strong>
-                            <br />
-                            <span style={{ fontSize: '14px', color: '#666' }}>
-                              Date: {new Date(item.date).toLocaleDateString()}
-                              <br />
-                              Category: {item.category}
+                  {selectedPin.items && selectedPin.items.length > 0 ? (
+                    <div>
+                      <h4>Items:</h4>
+                      <ul className="items-list">
+                        {selectedPin.items.map((item, index) => (
+                          <li 
+                            key={index}
+                            className="item-entry"
+                            onClick={() => handleItemClick(item)}
+                          >
+                            <span className={`item-type ${item.type}`}>
+                              {item.type.toUpperCase()}
+                            </span>
+                            <span className="item-description">
+                              {item.description}
                             </span>
                           </li>
                         ))}
                       </ul>
-                    </>
+                    </div>
+                  ) : (
+                    <p>No items reported at this location</p>
                   )}
                 </div>
               </InfoWindow>
@@ -314,14 +333,22 @@ const Map = () => {
           </GoogleMap>
         </LoadScript>
       </div>
-      {showReportForm && selectedLocation && (
+
+      {showReportForm && (
         <ReportItemForm
           onSubmit={handleReportSubmit}
-          selectedLocation={selectedLocation}
           onClose={() => {
             setShowReportForm(false);
             setSelectedLocation(null);
           }}
+          selectedLocation={selectedLocation}
+        />
+      )}
+
+      {selectedItem && (
+        <ItemDetailOverlay
+          item={selectedItem}
+          onClose={() => setSelectedItem(null)}
         />
       )}
     </div>
