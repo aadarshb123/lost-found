@@ -39,6 +39,7 @@ const Map = () => {
   const [showMyItems, setShowMyItems] = useState(false);
   const [userItems, setUserItems] = useState([]);
   const [isLoadingUserItems, setIsLoadingUserItems] = useState(false);
+  const [showRadiusControl, setShowRadiusControl] = useState(true);
 
   const containerStyle = {
     width: '100%',
@@ -463,7 +464,12 @@ const Map = () => {
                 >
                   My Items
                 </button>
-                <button className="messages-button" onClick={() => setShowChat(true)}>
+                <button className="messages-button" onClick={() => {
+                  setShowChat(true);
+                  setShowNearbyPanel(false);
+                  setProximityRadius(0);
+                  setShowRadiusControl(false);
+                }}>
                   Messages
                 </button>
                 <button className="logout-button" onClick={handleLogout}>
@@ -532,7 +538,7 @@ const Map = () => {
         </div>
       )}
 
-      {userLocation && (
+      {userLocation && showRadiusControl && (
         <div className="radius-control-overlay">
           <label>
             <span>Search Radius: {proximityRadius.toFixed(2)} miles</span>
@@ -661,7 +667,12 @@ const Map = () => {
       {showChat && (
         <div className={`chat-overlay ${showChat ? "show" : ""}`}>
           <div className="chat-content">
-            <Chat onClose={() => setShowChat(false)} />
+            <Chat onClose={() => {
+              setShowChat(false);
+              setShowRadiusControl(true);
+              setShowNearbyPanel(true);
+              setProximityRadius(0.42); // Setting a default radius when reopening
+            }} />
           </div>
         </div>
       )}

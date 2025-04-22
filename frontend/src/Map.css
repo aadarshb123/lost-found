@@ -533,8 +533,33 @@
 
 /* My Items Panel */
 .my-items-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  background-color: rgba(18, 35, 80, 0.9);
+  backdrop-filter: blur(3px);
+  border-radius: 1.5rem;
+  color: white;
+  box-shadow: 0 8px 20px 5px rgba(18, 35, 80, 0.3);
+  z-index: 1000;
+}
+
+.my-items-panel {
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.my-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .my-items-content {
@@ -544,7 +569,9 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 300px;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 60px);
 }
 
 .report-button {
