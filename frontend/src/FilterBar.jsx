@@ -18,7 +18,7 @@ const FilterBar = ({ onFilterChange }) => {
 
   return (
     <div className="filter-bar">
-      {/* Search bar */}
+
       <input
         type="text"
         placeholder="Search lost & found items..."
@@ -26,14 +26,19 @@ const FilterBar = ({ onFilterChange }) => {
         className="search-input"
       />
 
-      {/* Filter toggle button */}
       <button
         onClick={() => setShowFilters(!showFilters)}
         className="filter-button"
         aria-label="Toggle Filters"
-      ></button>
+      >
+        <img
+          src="\src\assets\filter-icon.png"
+          alt="Toggle Filters"
+          className="filter-button-icon"
 
-      {/* Filter dropdown */}
+        />
+      </button>
+
       <div className={`filter-dropdown ${showFilters ? "show" : ""}`}>
         <div className="filter-column">
           <label>Status</label>

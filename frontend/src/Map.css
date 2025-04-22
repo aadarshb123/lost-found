@@ -19,18 +19,16 @@
 /* ========== Top Bar ========== */
 .top-bar {
   position: absolute;
-  top: 10px;
+  top: 2%;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(18, 35, 80, 0.9); /* Add opacity */
   backdrop-filter: blur(3px); /* Blur the background */
   padding: 0.8rem 2rem;
-  border-radius: 1.5rem 1.5rem 1.5rem 1.5rem;
-  width: 95%;
-  max-width: 1100px;
+  border-radius: 1.5rem;
+  width: 65%;
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
   align-items: center;
   z-index: 100;
   box-shadow: 0 8px 20px 5px rgba(18, 35, 80, 1);
@@ -39,27 +37,77 @@
   font-weight: 500;
 }
 
+/* Title and Logo Section */
 .title-and-logo {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
-  cursor: pointer; /* Add this line to change the cursor on hover */
+  gap: 10px; /* Gap between logo and title */
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
+/* Title Styling */
 .title {
   color: #ffffff;
   font-size: 1.7rem;
   font-weight: 600;
-  margin: 0
+  margin: 0;
+}
+
+/* Search and Filters Section */
+.search-and-filters {
+  flex: 1; /* Take up remaining space */
+  margin: 0 30px; /* Fixed gap between title-and-logo and search-and-filters */
+  max-width: 40%; /* Ensure it doesn't grow too large */
+}
+
+/* Action Buttons Section */
+.action-buttons {
+  display: flex;
+  gap: 15px; /* Gap between action buttons */
+  align-items: center;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* ========== Responsive Adjustments ========== */
+@media (max-width: 1200px) {
+  .top-bar {
+    width: 90%; /* Adjust width for smaller screens */
+  }
+
+  .search-and-filters {
+    max-width: 35%; /* Reduce max width for smaller screens */
+    margin: 0 20px; /* Adjust gap for smaller screens */
+  }
+
+  .title {
+    font-size: 1.5rem; /* Slightly smaller title font size */
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the left */
+    padding: 1rem;
+    width: 95%; /* Adjust width for smaller screens */
+  }
+
+  .title-and-logo {
+    margin-bottom: 1rem; /* Add spacing below the title-and-logo */
+  }
+
+  .search-and-filters {
+    margin: 0 0 1rem 0; /* Add spacing below the search-and-filters */
+    max-width: 100%; /* Allow full width */
+  }
+
+  .action-buttons {
+    gap: 10px; /* Reduce gap between buttons */
+  }
 }
 
 /* ========== Search & Filters Section ========== */
-.search-and-filters {
-  flex: 1;
-  margin-left: -10%;
-  max-width: 30%;
-}
-
 .search-bar {
   flex: 1;
   margin: 0 ;
@@ -72,11 +120,10 @@
 }
 
 .filter-button {
-  background: #003057;
-  color: white;
+  background-color: #003057;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
@@ -89,17 +136,10 @@
 }
 
 /* ========== Action Buttons ========== */
-.action-buttons {
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-  flex-shrink: 0;
-}
-
 .messages-button,
 .logout-button {
   border: none;
-  border-radius:.7rem;
+  border-radius: 0.7rem;
   cursor: pointer;
   min-width: 100px;
   font-size: 1.1rem;
@@ -121,7 +161,7 @@
 }
 
 .logout-button {
-  background: #B3A369;
+  background: #b3a369;
   color: white;
 }
 
@@ -152,7 +192,7 @@
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
-  color: #B3A369;
+  color: #b3a369;
 }
 
 .info-window p {
@@ -165,7 +205,7 @@
   display: block;
   width: 100%;
   padding: 0.5rem;
-  background-color: #B3A369;
+  background-color: #b3a369;
   color: #ffffff;
   border: none;
   border-radius: 14px;
@@ -313,7 +353,6 @@
   background: #030303;
   color: rgb(240, 221, 9);
 }
-
 /* ========== Extra ========== */
 .map-title {
   color: #f4e805;
@@ -332,4 +371,63 @@
   margin: 10px 0;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Report Form Overlay */
+.report-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(px);
+  transition: opacity 5s ease, transform 1s ease;
+}
+
+.report-form-overlay.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Report Form Content */
+.report-form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  animation: slideIn 0.3s ease;
+}
+
+/* Chat Overlay */
+.chat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(58, 56, 88, 0.192); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  opacity: 1; /* Fully visible */
+  transform: none; /* No transform effects */
+}
+
+/* Chat Content */
+.chat-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
 }
