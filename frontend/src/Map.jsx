@@ -31,8 +31,9 @@ const Map = () => {
 
   const containerStyle = {
     width: '100%',
-    height: 'calc(100vh - 60px)',
+    height: '100vh', // full screen height now
   };
+  
 
   const center = {
     lat: 33.776,
@@ -276,20 +277,8 @@ const Map = () => {
   };
 
   return (
-    <div className="map-container">
-      <div className="top-bar">
-        <div className="search-and-filters">
-          <FilterBar onFilterChange={filterPins} />
-        </div>
-        <div className="action-buttons">
-          <button className="messages-button" onClick={() => setShowChat(true)}>
-            Messages
-          </button>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </div>
+    <div className="map-fullscreen">
+      
       <div className="map-wrapper">
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
@@ -305,6 +294,26 @@ const Map = () => {
               fullscreenControl: true
             }}
           >
+          <div className="top-bar">
+            <div className="search-and-filters">
+              <FilterBar onFilterChange={filterPins} />
+            </div>
+            <div className="action-buttons">
+              <button className="messages-button" onClick={() => setShowChat(true)}>
+                Messages
+              </button>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          </div>
+
+
+
+
+
+
+
             {selectedPin && (
               <InfoWindow
                 position={{ lat: selectedPin.lat, lng: selectedPin.lng }}
