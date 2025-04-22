@@ -295,6 +295,15 @@ const Map = () => {
             }}
           >
           <div className="top-bar">
+            <div className='title-and-logo'>
+            <img 
+              src="\src\assets\bee.png" 
+              alt="App Icon" 
+              className="app-icon" 
+              style={{ width: '40px', height: '40px', marginRight: '0px' }} 
+            />
+            <p className="title">GT Lost & Found</p>
+            </div>
             <div className="search-and-filters">
               <FilterBar onFilterChange={filterPins} />
             </div>
