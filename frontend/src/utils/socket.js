@@ -5,9 +5,7 @@ let socket;
 export const connectSocket = () => {
   if (!socket) {
     socket = io('http://localhost:5001', {
-      auth: {
-        token: localStorage.getItem('jwt')
-      }
+      withCredentials: true  // This enables sending cookies with the request
     });
 
     socket.on('connect', () => {

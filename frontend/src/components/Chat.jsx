@@ -75,6 +75,10 @@ const Chat = ({ onClose }) => {
       setIsLoading(true);
       const data = await getConversations();
       setConversations(data);
+      // Automatically select the most recent conversation
+      if (data.length > 0) {
+        setSelectedConversation(data[0]);
+      }
     } catch (error) {
       console.error('Error fetching conversations:', error);
     } finally {
@@ -174,7 +178,7 @@ const Chat = ({ onClose }) => {
                       new Date(message.createdAt).getTime() - new Date(messages[index - 1].createdAt).getTime() > 300000;
 
                     return (
-                      <div key={message._id || index}>
+                      <div key={message._id} className="message-group">
                         {showTimestamp && (
                           <div className="message-timestamp">
                             {new Date(message.createdAt).toLocaleDateString()}

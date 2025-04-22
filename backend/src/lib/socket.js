@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -9,6 +10,7 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
 const app = express();
+app.use(cookieParser());
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -43,10 +45,27 @@ function cleanupInactiveUsers() {
 }
 
 io.on("connection", (socket) => {
-  const token = socket.handshake.auth?.token;
+  // Get token from cookie
+  const cookies = socket.handshake.headers.cookie;
+  if (!cookies) {
+    console.log(`Connection rejected (no cookies) - socket ID: ${socket.id}`);
+    return socket.disconnect(true);
+  }
+
+  // Parse cookies
+  const cookieParser = (str) => 
+    str.split(';')
+      .map(v => v.split('='))
+      .reduce((acc, v) => {
+        acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+        return acc;
+      }, {});
+
+  const parsedCookies = cookieParser(cookies);
+  const token = parsedCookies.jwt;
 
   if (!token) {
-    console.log(`Connection rejected (no token) - socket ID: ${socket.id}`);
+    console.log(`Connection rejected (no jwt cookie) - socket ID: ${socket.id}`);
     return socket.disconnect(true);
   }
 

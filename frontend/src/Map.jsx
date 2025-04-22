@@ -661,6 +661,13 @@ const Map = () => {
         <ItemDetailOverlay
           item={selectedItem}
           onClose={() => setSelectedItem(null)}
+          onOpenChat={() => {
+            setSelectedItem(null);
+            setShowChat(true);
+            setShowRadiusControl(false);
+            setShowNearbyPanel(false);
+            setProximityRadius(0);
+          }}
         />
       )}
 
