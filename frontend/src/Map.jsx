@@ -49,8 +49,9 @@ const Map = () => {
 
   const containerStyle = {
     width: '100%',
-    height: 'calc(100vh - 60px)',
+    height: '100vh', // full screen height now
   };
+  
 
   const center = {
     lat: 33.776,
@@ -403,142 +404,11 @@ const Map = () => {
   };
 
   return (
-    <div className="map-container">
-      {showLocationPrompt && (
-        <div className="location-prompt">
-          <div className="location-prompt-content">
-            <h3>Enable Location Services</h3>
-            <p>Allow us to access your location to notify you when you're near lost or found items.</p>
-            <button onClick={startLocationTracking}>Enable Location</button>
-            <button onClick={() => setShowLocationPrompt(false)}>Not Now</button>
-          </div>
-        </div>
-      )}
 
-      {userLocation && (
-        <div className="radius-control">
-          <label>
-            <span>Search Radius: {proximityRadius.toFixed(2)} miles</span>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="any"
-              value={proximityRadius}
-              onChange={(e) => handleRadiusChange(Number(e.target.value))}
-            />
-          </label>
-        </div>
-      )}
+    <div className="map-fullscreen">
+      
 
-      {showNearbyPanel && nearbyItems.length > 0 && (
-        <div className="nearby-panel">
-          <div className="nearby-header">
-            <h3>Nearby Items ({nearbyItems.length})</h3>
-            <button onClick={() => setShowNearbyPanel(false)}>×</button>
-          </div>
-          <div className="nearby-items">
-            {nearbyItems.map((item, index) => {
-              let distance;
-              try {
-                distance = calculateDistance(
-                  userLocation.lat,
-                  userLocation.lng,
-                  item.location.coordinates.lat,
-                  item.location.coordinates.lng
-                );
-              } catch {
-                distance = Infinity;
-              }
-              
-              return (
-                <div key={index} className="nearby-item" onClick={() => handleItemClick(item)}>
-                  <div className="nearby-item-content">
-                    <span className={`item-type ${item.type}`}>
-                      {item.type.toUpperCase()}
-                    </span>
-                    <span className="item-description">{item.description}</span>
-                  </div>
-                  <span className="item-distance">
-                    {distance === Infinity ? 'Unknown' : formatDistance(distance)}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
-      <div className="top-bar">
-        <div className="search-and-filters">
-          <FilterBar onFilterChange={filterPins} />
-        </div>
-        <div className="action-buttons">
-          <button 
-            className="my-items-button"
-            onClick={() => {
-              setShowMyItems(true);
-              fetchUserItems();
-            }}
-          >
-            My Items
-          </button>
-          <button className="messages-button" onClick={() => setShowChat(true)}>
-            Messages
-          </button>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {/* My Items Panel */}
-      {showMyItems && (
-        <div className="my-items-panel">
-          <div className="my-items-header">
-            <h3>My Items</h3>
-            <button className="close-button" onClick={() => setShowMyItems(false)}>×</button>
-          </div>
-          <div className="my-items-content">
-            {isLoadingUserItems ? (
-              <div className="loading">Loading your items...</div>
-            ) : userItems.length === 0 ? (
-              <div className="no-items-message">
-                <p>You haven't posted any items yet.</p>
-                <button onClick={() => setShowReportForm(true)}>Report an Item</button>
-              </div>
-            ) : (
-              <div className="items-list">
-                {userItems.map(item => (
-                  <div key={item._id} className={`item-card ${item.isResolved ? 'resolved' : ''}`}>
-                    <div className="item-info">
-                      <span className={`item-type ${item.type}`}>
-                        {item.type.toUpperCase()}
-                      </span>
-                      <p className="item-description">{item.description}</p>
-                      <p className="item-location">{item.location.building}</p>
-                      <p className="item-date">
-                        {item.isResolved 
-                          ? `Resolved on ${new Date(item.resolvedAt).toLocaleDateString()}`
-                          : `Posted on ${new Date(item.createdAt).toLocaleDateString()}`
-                        }
-                      </p>
-                    </div>
-                    {!item.isResolved && (
-                      <button 
-                        className="resolve-button"
-                        onClick={() => handleResolveItem(item._id)}
-                      >
-                        Mark as Resolved
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       <div className="map-wrapper">
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
@@ -555,32 +425,36 @@ const Map = () => {
               fullscreenControl: true
             }}
           >
-            {userLocation && (
-              <>
-                <Marker
-                  position={userLocation}
-                  icon={{
-                    path: window.google.maps.SymbolPath.CIRCLE,
-                    fillColor: '#4285F4',
-                    fillOpacity: 1,
-                    strokeColor: '#ffffff',
-                    strokeWeight: 2,
-                    scale: 8
-                  }}
-                />
-                <Circle
-                  center={userLocation}
-                  radius={getRadiusInMeters(proximityRadius)}
-                  options={{
-                    fillColor: '#4285F4',
-                    fillOpacity: 0.1,
-                    strokeColor: '#4285F4',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                  }}
-                />
-              </>
-            )}
+
+          <div className="top-bar">
+            <div className='title-and-logo'>
+            <img 
+              src="\src\assets\bee.png" 
+              alt="App Icon" 
+              className="app-icon" 
+              style={{ width: '50px', height: '50px', marginRight: '0px' }} 
+            />
+            <p className="title">GT Lost & Found</p>
+            </div>
+            <div className="search-and-filters">
+              <FilterBar onFilterChange={filterPins} />
+            </div>
+            <div className="action-buttons">
+              <button className="messages-button" onClick={() => setShowChat(true)}>
+                Messages
+              </button>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          </div>
+
+
+
+
+
+
+
 
             {selectedPin && (
               <InfoWindow

@@ -1,68 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
+import "./FilterBar.css";
 
-/*
-onFilterChange is a callback function passed as a prop to the FilterBar component. 
-Its purpose is to notify the parent component whenever the user selects a new filter option,
-allowing the parent to update its state and adjust the displayed data accordingly.
-*/
 const FilterBar = ({ onFilterChange }) => {
+  const [showFilters, setShowFilters] = useState(false);
 
-    /*
-    The handleStatusChange is an event handler. It listens to changes in the status filter (e.g., "lost", "found", "claimed").
-    onFilterChange is called after detecting a change. It sends an object containing the new status (e.target.value) back to parent.
-    The parent is Home.jsx or the component that uses FilterBar.
-    */
-    const handleStatusChange = (e) => {
-        onFilterChange({ filter: "status", value: e.target.value });
-    };
+  const handleStatusChange = (e) => {
+    onFilterChange({ filter: "status", value: e.target.value });
+  };
 
-    /*
-    The handleStatusChange is an event handler. It listens to changes in the item filter.
-    onFilterChange is called after detecting a change. It sends an object containing the new itemType (e.target.value) back to parent.
-    */
-    const handleItemTypeChange = (e) => {
-        onFilterChange({ filter: "itemType", value: e.target.value });
-    };
+  const handleItemTypeChange = (e) => {
+    onFilterChange({ filter: "itemType", value: e.target.value });
+  };
 
-    const handleSearchChange = (e) => {
-        onFilterChange({ filter: "search", value: e.target.value });
-    };
+  const handleSearchChange = (e) => {
+    onFilterChange({ filter: "search", value: e.target.value });
+  };
 
-    /*
-    Tailwind CSS includes pre-built classes which allow you to build quickly.
-    */
-    return (
-        <div className="flex items-center w-full">
-          {/* Status dropdown */}
-          <select
-            onChange={handleStatusChange}
-          >
-            <option value="">All Statuses</option>
+
+  return (
+    <div className="filter-bar">
+      {/* Search bar */}
+      <input
+        type="text"
+        placeholder="Search lost & found items..."
+        onChange={handleSearchChange}
+        className="search-input"
+      />
+
+      {/* Filter toggle button */}
+      <button
+        onClick={() => setShowFilters(!showFilters)}
+        className="filter-button"
+        aria-label="Toggle Filters"
+      ></button>
+
+      {/* Filter dropdown */}
+      <div className={`filter-dropdown ${showFilters ? "show" : ""}`}>
+        <div className="filter-column">
+          <label>Status</label>
+          <select onChange={handleStatusChange}>
+            <option value="">All</option>
+
             <option value="lost">Lost</option>
             <option value="found">Found</option>
             <option value="claimed">Claimed</option>
           </select>
-    
-          {/* Item type dropdown */}
-          <select
-            onChange={handleItemTypeChange}
-          >
-            <option value="">All Item Types</option>
+
+        </div>
+
+        <div className="filter-column">
+          <label>Item Type</label>
+          <select onChange={handleItemTypeChange}>
+            <option value="">All</option>
+
             <option value="electronics">Electronics</option>
             <option value="clothing">Clothing</option>
             <option value="personal">Personal</option>
             <option value="other">Other</option>
           </select>
 
-          {/* Search bar */}
-          <input
-            type="text"
-            placeholder="Search lost & found items..."
-            onChange={handleSearchChange}
-          />
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default FilterBar;
-// This code defines a FilterBar component that allows users to filter items based on their status and type.
