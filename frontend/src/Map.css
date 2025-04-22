@@ -516,6 +516,11 @@
   gap: 0.5rem;
 }
 
+.radius-control-overlay span {
+  color: white;
+  font-weight: bold;
+}
+
 .radius-control-overlay input[type="range"] {
   width: 100%;
 }
@@ -588,14 +593,39 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
 .nearby-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.nearby-header h3 {
+  margin: 0;
+  text-align: center;
+}
+
+.nearby-header button {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  line-height: 1;
+  z-index: 2;
+}
+
+.nearby-header button:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .nearby-items {
@@ -605,7 +635,7 @@
 }
 
 .nearby-item {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -614,13 +644,25 @@
 }
 
 .nearby-item:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .nearby-item-content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.nearby-item-content .item-description {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.nearby-item-content .item-date {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-style: italic;
 }
 
 .item-distance {

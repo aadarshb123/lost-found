@@ -620,9 +620,15 @@ const Map = () => {
                         {item.type.toUpperCase()}
                       </span>
                       <span className="item-description">{item.description}</span>
+                      <span className="item-date">
+                        {new Date(item.date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </span>
                     </div>
                     <span className="item-distance">
-                      {distance === Infinity ? 'Unknown' : formatDistance(distance)}
+                      {distance === Infinity ? item.location.building : formatDistance(distance)}
                     </span>
                   </div>
                 );
