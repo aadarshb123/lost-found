@@ -7,89 +7,110 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(77, 77, 104, 0.3);
+  backdrop-filter: blur(2px);
   z-index: 1000;
+  font-family: "Outfit", sans-serif;
 }
 
 .report-form {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 15px 50px 10px rgba(0, 0, 0, 0.5), 0px -10px #bba968 ;
+  position: relative;
+  padding: 0.5rem 1.5rem 2rem 1.5rem; /* leave more room on the top */ /* extra space for the close button */
+  border-radius: 25px;
   width: 90%;
   max-width: 400px;
-  max-height: 90vh;
   overflow-y: auto;
+  font-family: "Outfit", sans-serif;
 }
+
 
 .close-button {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 15px;
+  right: 15px;
+  max-width: 10px;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
   cursor: pointer;
-  color: #666;
+  color: #888;
+  z-index: 10;
+  line-height: 1;
 }
+
 
 .close-button:hover {
-  color: #000;
+  color: #B3A369;
 }
 
+
 .report-form h2 {
-  margin: 0 0 1.5rem 0;
-  color: #333;
+  font-weight: 700;
   font-size: 1.5rem;
+  color: #003057;
+  margin-top: 0.5rem;
+  margin-bottom: .5rem;
   text-align: center;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #444;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #003057;
+  text-align:left;
+  margin-top: 0.3rem;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
+  padding: 9px;
+  font-size: 0.85rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  font-family: "Outfit", serif;
+  background-color: white;
+  color: #333;
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height:14px;
+  height: 52px;
 }
 
 .location-display {
   background-color: #f5f5f5;
+  color: #666;
   cursor: not-allowed;
 }
 
 .submit-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #4CAF50;
+  width: 60%;
+  margin: 1rem auto 0 auto;
+  padding: 10px;
+  background-color: #B3A369;
   color: white;
+  font-size: 15px;
+  font-weight: 600;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.2s;
+  display: block;
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: #f3b72b;
 }
 
 .submit-button:disabled {
@@ -100,11 +121,19 @@
 @media (max-width: 480px) {
   .report-form {
     width: 95%;
-    padding: 1rem;
+    padding: 1rem 1rem 1.25rem 1rem;
+    padding-top: 2.5rem; /* extra space for close button */
   }
-  
+
   .report-form h2 {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 12px;
+    font-size: 1.5rem;
   }
 }
