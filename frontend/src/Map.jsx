@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleMap, LoadScript, InfoWindow, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, InfoWindow, Marker, Circle } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import ReportItemForm from './components/ReportItemForm';
 import ItemDetailOverlay from './components/ItemDetailOverlay';
@@ -7,12 +7,22 @@ import Chat from './components/Chat';
 import FilterBar from './FilterBar';
 import { createItem, getItems } from './utils/api';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
+import { findNearbyItems } from './utils/locationUtils';
 import './Map.css';
 
 const googleMapsApiKey = 'AIzaSyDrl5HtC_bvZ1Df3Tb5lCrhS6-DHE5PbR4';
 
 // Define libraries outside the component to prevent recreation on each render
 const libraries = ['marker', 'visualization'];
+
+const METERS_PER_MILE = 1609.34;
+
+const RADIUS_PRESETS = [
+  { label: '0.1 mi', value: 0.1 },
+  { label: '0.25 mi', value: 0.25 },
+  { label: '0.5 mi', value: 0.5 },
+  { label: '1 mi', value: 1.0 }
+];
 
 const Map = () => {
   const [pins, setPins] = useState([]);
@@ -28,6 +38,11 @@ const Map = () => {
   const mapRef = useRef(null);
   const markersRef = useRef({});
   const navigate = useNavigate();
+  const [userLocation, setUserLocation] = useState(null);
+  const [nearbyItems, setNearbyItems] = useState([]);
+  const [showLocationPrompt, setShowLocationPrompt] = useState(true);
+  const [showNearbyPanel, setShowNearbyPanel] = useState(false);
+  const [proximityRadius, setProximityRadius] = useState(0.5); // Default to 0.5 miles
 
   const containerStyle = {
     width: '100%',
@@ -248,6 +263,7 @@ const Map = () => {
   }, [isMapLoaded, pins, markerClusterer, activeFilter, searchQuery]);
 
   const handleLogout = () => {
+    localStorage.removeItem('userId');
     navigate('/login');
   };
 
@@ -276,14 +292,74 @@ const Map = () => {
     setSelectedItem(item);
   };
 
+  // Request location permission and start tracking
+  const startLocationTracking = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserLocation(newLocation);
+          setShowLocationPrompt(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to get your location. Some features may be limited.');
+          setShowLocationPrompt(false);
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser');
+      setShowLocationPrompt(false);
+    }
+  };
+
+  // Convert miles to meters for the backend/calculations
+  const getRadiusInMeters = (miles) => {
+    return Math.min(miles * METERS_PER_MILE, METERS_PER_MILE); // Cap at 1 mile
+  };
+
+  const handleRadiusChange = (newRadius) => {
+    // Ensure radius is between 0 and 1 mile
+    const radius = Math.min(Math.max(0, newRadius), 1.0);
+    setProximityRadius(radius);
+  };
+
+  // Format distance for display
+  const formatDistance = (meters) => {
+    const miles = meters / METERS_PER_MILE;
+    if (miles < 0.1) {
+      return `${(miles * 5280).toFixed(0)} ft`; // Convert to feet if less than 0.1 miles
+    }
+    return `${miles.toFixed(2)} mi`;
+  };
+
+  // Check for nearby items whenever user location, pins, or radius changes
+  useEffect(() => {
+    if (userLocation && pins.length > 0) {
+      const allItems = pins.flatMap(pin => pin.items);
+      const nearby = findNearbyItems(userLocation, allItems, getRadiusInMeters(proximityRadius));
+      setNearbyItems(nearby);
+      
+      if (nearby.length > 0) {
+        setShowNearbyPanel(true);
+      }
+    }
+  }, [userLocation, pins, proximityRadius]);
+
   return (
+
     <div className="map-fullscreen">
       
+
       <div className="map-wrapper">
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
             mapContainerStyle={containerStyle} 
-            center={center} 
+            center={userLocation || center} 
             zoom={15} 
             onLoad={onLoad}
             options={{
@@ -294,6 +370,7 @@ const Map = () => {
               fullscreenControl: true
             }}
           >
+
           <div className="top-bar">
             <div className='title-and-logo'>
             <img 
@@ -316,6 +393,7 @@ const Map = () => {
               </button>
             </div>
           </div>
+
 
 
 

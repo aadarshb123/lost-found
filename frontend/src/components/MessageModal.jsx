@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { startItemConversation } from '../utils/api';
 import './MessageModal.css';
 
 const MessageModal = ({ itemId, onClose }) => {
@@ -15,18 +15,10 @@ const MessageModal = ({ itemId, onClose }) => {
     setError('');
 
     try {
-      await axios.post(`/api/messages/item/${itemId}`, {
-        text: message
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
+      await startItemConversation(itemId, message);
       onClose();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send message');
+      setError(err.message || 'Failed to send message');
     } finally {
       setIsSending(false);
     }

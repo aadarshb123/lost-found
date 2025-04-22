@@ -16,6 +16,7 @@ const FilterBar = ({ onFilterChange }) => {
     onFilterChange({ filter: "search", value: e.target.value });
   };
 
+
   return (
     <div className="filter-bar">
       {/* Search bar */}
@@ -39,21 +40,25 @@ const FilterBar = ({ onFilterChange }) => {
           <label>Status</label>
           <select onChange={handleStatusChange}>
             <option value="">All</option>
+
             <option value="lost">Lost</option>
             <option value="found">Found</option>
             <option value="claimed">Claimed</option>
           </select>
+
         </div>
 
         <div className="filter-column">
           <label>Item Type</label>
           <select onChange={handleItemTypeChange}>
             <option value="">All</option>
+
             <option value="electronics">Electronics</option>
             <option value="clothing">Clothing</option>
             <option value="personal">Personal</option>
             <option value="other">Other</option>
           </select>
+
         </div>
       </div>
     </div>
