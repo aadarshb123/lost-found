@@ -16,7 +16,8 @@ function Login() {
     setIsLoading(true);
 
     try {
-      await loginUser(email, password);
+      const response = await loginUser(email, password);
+      localStorage.setItem('userId', response.user._id);
       navigate('/Map'); // Navigate to map page after successful login
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');

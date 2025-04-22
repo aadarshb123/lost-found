@@ -109,4 +109,98 @@ export const getItems = async () => {
     console.error('Get items error:', error);
     throw error;
   }
+};
+
+export const getConversations = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/messages/users`, {
+      method: 'GET',
+      headers: {
+        ...defaultHeaders,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch conversations');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get conversations error:', error);
+    throw error;
+  }
+};
+
+export const getMessages = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/messages/${userId}`, {
+      method: 'GET',
+      headers: {
+        ...defaultHeaders,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch messages');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get messages error:', error);
+    throw error;
+  }
+};
+
+export const sendMessage = async (receiverId, text) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/messages/send/${receiverId}`, {
+      method: 'POST',
+      headers: {
+        ...defaultHeaders,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include',
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to send message');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Send message error:', error);
+    throw error;
+  }
+};
+
+export const startItemConversation = async (itemId, text) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/messages/item/${itemId}`, {
+      method: 'POST',
+      headers: {
+        ...defaultHeaders,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      credentials: 'include',
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to start conversation');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Start conversation error:', error);
+    throw error;
+  }
 }; 

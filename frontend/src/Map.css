@@ -18,6 +18,7 @@
 
 /* ========== Top Bar ========== */
 .top-bar {
+
   position: absolute;
   top: 2%;
   left: 50%;
@@ -27,9 +28,11 @@
   padding: 0.8rem 2rem;
   border-radius: 1.5rem;
   width: 65%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   z-index: 100;
   box-shadow: 0 8px 20px 5px rgba(18, 35, 80, 1);
   color: white;
@@ -41,6 +44,9 @@
 .title-and-logo {
   display: flex;
   align-items: center;
+  gap: 0.2rem;
+  cursor: pointer; /* Add this line to change the cursor on hover */
+
   gap: 10px; /* Gap between logo and title */
   cursor: pointer;
   flex-shrink: 0; /* Prevent shrinking */
@@ -108,9 +114,17 @@
 }
 
 /* ========== Search & Filters Section ========== */
+.search-and-filters {
+
+  flex: 1;
+  margin-left: -10%;
+  max-width: 30%;
+}
+
 .search-bar {
   flex: 1;
   margin: 0 ;
+
 }
 
 .filter-section {
@@ -339,6 +353,7 @@
 .report-button:hover {
   background-color: #8c7f4f;
 }
+
 
 .map-button {
   background: #ebbd04;
