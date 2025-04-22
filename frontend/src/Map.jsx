@@ -300,7 +300,7 @@ const Map = () => {
               src="\src\assets\bee.png" 
               alt="App Icon" 
               className="app-icon" 
-              style={{ width: '40px', height: '40px', marginRight: '0px' }} 
+              style={{ width: '50px', height: '50px', marginRight: '0px' }} 
             />
             <p className="title">GT Lost & Found</p>
             </div>
