@@ -32,15 +32,10 @@ const FilterBar = ({ onFilterChange }) => {
     Tailwind CSS includes pre-built classes which allow you to build quickly.
     */
     return (
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex items-center w-full">
           {/* Status dropdown */}
           <select
             onChange={handleStatusChange}
-            className="h-10 px-3 bg-gray-50 border-2 border-[#003057] rounded-lg
-                     text-[#003057] font-medium text-sm
-                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
-                     focus:bg-white cursor-pointer hover:border-[#B3A369]
-                     transition-all duration-200 w-[130px]"
           >
             <option value="">All Statuses</option>
             <option value="lost">Lost</option>
@@ -51,11 +46,6 @@ const FilterBar = ({ onFilterChange }) => {
           {/* Item type dropdown */}
           <select
             onChange={handleItemTypeChange}
-            className="h-10 px-3 bg-gray-50 border-2 border-[#003057] rounded-lg
-                     text-[#003057] font-medium text-sm
-                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
-                     focus:bg-white cursor-pointer hover:border-[#B3A369]
-                     transition-all duration-200 w-[140px]"
           >
             <option value="">All Item Types</option>
             <option value="electronics">Electronics</option>
@@ -69,10 +59,6 @@ const FilterBar = ({ onFilterChange }) => {
             type="text"
             placeholder="Search lost & found items..."
             onChange={handleSearchChange}
-            className="flex-1 h-10 px-4 bg-gray-50 border-2 border-[#003057] rounded-lg 
-                     text-[#003057] placeholder-gray-400 text-sm
-                     focus:outline-none focus:border-[#B3A369] focus:ring-2 focus:ring-[#B3A369]/30
-                     focus:bg-white transition-all duration-200"
           />
         </div>
     );

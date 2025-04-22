@@ -32,8 +32,9 @@ function SignUp() {
     setIsLoading(true);
 
     try {
-      await signupUser(name, email, password);
-      navigate('/verification');
+      const response = await signupUser(name, email, password);
+      localStorage.setItem('userId', response.user._id);
+      navigate('/Map');
     } catch (err) {
       setError(err.message || 'Signup failed. Please try again.');
     } finally {

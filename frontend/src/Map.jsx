@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleMap, LoadScript, InfoWindow, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, InfoWindow, Marker, Circle } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import ReportItemForm from './components/ReportItemForm';
 import ItemDetailOverlay from './components/ItemDetailOverlay';
@@ -7,12 +7,22 @@ import Chat from './components/Chat';
 import FilterBar from './FilterBar';
 import { createItem, getItems } from './utils/api';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
+import { findNearbyItems } from './utils/locationUtils';
 import './Map.css';
 
 const googleMapsApiKey = 'AIzaSyDrl5HtC_bvZ1Df3Tb5lCrhS6-DHE5PbR4';
 
 // Define libraries outside the component to prevent recreation on each render
 const libraries = ['marker', 'visualization'];
+
+const METERS_PER_MILE = 1609.34;
+
+const RADIUS_PRESETS = [
+  { label: '0.1 mi', value: 0.1 },
+  { label: '0.25 mi', value: 0.25 },
+  { label: '0.5 mi', value: 0.5 },
+  { label: '1 mi', value: 1.0 }
+];
 
 const Map = () => {
   const [pins, setPins] = useState([]);
@@ -28,6 +38,11 @@ const Map = () => {
   const mapRef = useRef(null);
   const markersRef = useRef({});
   const navigate = useNavigate();
+  const [userLocation, setUserLocation] = useState(null);
+  const [nearbyItems, setNearbyItems] = useState([]);
+  const [showLocationPrompt, setShowLocationPrompt] = useState(true);
+  const [showNearbyPanel, setShowNearbyPanel] = useState(false);
+  const [proximityRadius, setProximityRadius] = useState(0.5); // Default to 0.5 miles
 
   const containerStyle = {
     width: '100%',
@@ -247,6 +262,7 @@ const Map = () => {
   }, [isMapLoaded, pins, markerClusterer, activeFilter, searchQuery]);
 
   const handleLogout = () => {
+    localStorage.removeItem('userId');
     navigate('/login');
   };
 
@@ -275,8 +291,131 @@ const Map = () => {
     setSelectedItem(item);
   };
 
+  // Request location permission and start tracking
+  const startLocationTracking = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserLocation(newLocation);
+          setShowLocationPrompt(false);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to get your location. Some features may be limited.');
+          setShowLocationPrompt(false);
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser');
+      setShowLocationPrompt(false);
+    }
+  };
+
+  // Convert miles to meters for the backend/calculations
+  const getRadiusInMeters = (miles) => {
+    return Math.min(miles * METERS_PER_MILE, METERS_PER_MILE); // Cap at 1 mile
+  };
+
+  const handleRadiusChange = (newRadius) => {
+    // Ensure radius is between 0 and 1 mile
+    const radius = Math.min(Math.max(0, newRadius), 1.0);
+    setProximityRadius(radius);
+  };
+
+  // Format distance for display
+  const formatDistance = (meters) => {
+    const miles = meters / METERS_PER_MILE;
+    if (miles < 0.1) {
+      return `${(miles * 5280).toFixed(0)} ft`; // Convert to feet if less than 0.1 miles
+    }
+    return `${miles.toFixed(2)} mi`;
+  };
+
+  // Check for nearby items whenever user location, pins, or radius changes
+  useEffect(() => {
+    if (userLocation && pins.length > 0) {
+      const allItems = pins.flatMap(pin => pin.items);
+      const nearby = findNearbyItems(userLocation, allItems, getRadiusInMeters(proximityRadius));
+      setNearbyItems(nearby);
+      
+      if (nearby.length > 0) {
+        setShowNearbyPanel(true);
+      }
+    }
+  }, [userLocation, pins, proximityRadius]);
+
   return (
     <div className="map-container">
+      {showLocationPrompt && (
+        <div className="location-prompt">
+          <div className="location-prompt-content">
+            <h3>Enable Location Services</h3>
+            <p>Allow us to access your location to notify you when you're near lost or found items.</p>
+            <button onClick={startLocationTracking}>Enable Location</button>
+            <button onClick={() => setShowLocationPrompt(false)}>Not Now</button>
+          </div>
+        </div>
+      )}
+
+      {userLocation && (
+        <div className="radius-control">
+          <label>
+            <span>Search Radius: {proximityRadius.toFixed(2)} miles</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="any"
+              value={proximityRadius}
+              onChange={(e) => handleRadiusChange(Number(e.target.value))}
+            />
+          </label>
+        </div>
+      )}
+
+      {showNearbyPanel && nearbyItems.length > 0 && (
+        <div className="nearby-panel">
+          <div className="nearby-header">
+            <h3>Nearby Items ({nearbyItems.length})</h3>
+            <button onClick={() => setShowNearbyPanel(false)}>×</button>
+          </div>
+          <div className="nearby-items">
+            {nearbyItems.map((item, index) => {
+              let distance;
+              try {
+                distance = calculateDistance(
+                  userLocation.lat,
+                  userLocation.lng,
+                  item.location.coordinates.lat,
+                  item.location.coordinates.lng
+                );
+              } catch {
+                distance = Infinity;
+              }
+              
+              return (
+                <div key={index} className="nearby-item" onClick={() => handleItemClick(item)}>
+                  <div className="nearby-item-content">
+                    <span className={`item-type ${item.type}`}>
+                      {item.type.toUpperCase()}
+                    </span>
+                    <span className="item-description">{item.description}</span>
+                  </div>
+                  <span className="item-distance">
+                    {distance === Infinity ? 'Unknown' : formatDistance(distance)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="top-bar">
         <div className="search-and-filters">
           <FilterBar onFilterChange={filterPins} />
@@ -294,7 +433,7 @@ const Map = () => {
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
             mapContainerStyle={containerStyle} 
-            center={center} 
+            center={userLocation || center} 
             zoom={15} 
             onLoad={onLoad}
             options={{
@@ -305,6 +444,33 @@ const Map = () => {
               fullscreenControl: true
             }}
           >
+            {userLocation && (
+              <>
+                <Marker
+                  position={userLocation}
+                  icon={{
+                    path: window.google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#4285F4',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 2,
+                    scale: 8
+                  }}
+                />
+                <Circle
+                  center={userLocation}
+                  radius={getRadiusInMeters(proximityRadius)}
+                  options={{
+                    fillColor: '#4285F4',
+                    fillOpacity: 0.1,
+                    strokeColor: '#4285F4',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                  }}
+                />
+              </>
+            )}
+
             {selectedPin && (
               <InfoWindow
                 position={{ lat: selectedPin.lat, lng: selectedPin.lng }}

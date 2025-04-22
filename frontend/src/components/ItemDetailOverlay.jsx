@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import MessageModal from './MessageModal';
 import './ItemDetailOverlay.css';
 
 const ItemDetailOverlay = ({ item, onClose }) => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+
+  const handleBackdropClick = useCallback((e) => {
+    // Only close if clicking the backdrop itself, not its children
+    if (e.target.className === 'overlay-backdrop') {
+      onClose();
+    }
+  }, [onClose]);
 
   if (!item) return null;
 
@@ -16,7 +23,7 @@ const ItemDetailOverlay = ({ item, onClose }) => {
   };
 
   return (
-    <div className="overlay-backdrop">
+    <div className="overlay-backdrop" onClick={handleBackdropClick}>
       <div className="overlay-content">
         <button className="close-button" onClick={onClose}>×</button>
         

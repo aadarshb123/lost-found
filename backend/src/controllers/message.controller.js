@@ -109,9 +109,18 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
+    // Get sender and receiver socket IDs
     const receiverSocketId = getReceiverSocketId(receiverId);
+    const senderSocketId = getReceiverSocketId(senderId);
+
+    // Emit to receiver if online
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    // Emit to sender
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
     }
 
     res.status(201).json(newMessage);
@@ -131,6 +140,12 @@ export const markMessagesAsSeen = async (req, res) => {
       { senderId, receiverId, isSeen: false },
       { $set: { isSeen: true } }
     );
+
+    // Emit message seen event to sender
+    const senderSocketId = getReceiverSocketId(senderId);
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("messagesSeen", { senderId, receiverId });
+    }
 
     res.status(200).json({
       message: "Messages marked as seen",
@@ -163,6 +178,20 @@ export const startItemConversation = async (req, res) => {
       text: `Regarding your ${item.type} item: ${text}`,
       isSeen: false
     });
+
+    // Get sender and receiver socket IDs
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    const senderSocketId = getReceiverSocketId(senderId);
+
+    // Emit to receiver if online
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", message);
+    }
+
+    // Emit to sender
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", message);
+    }
 
     res.status(201).json(message);
   } catch (error) {
