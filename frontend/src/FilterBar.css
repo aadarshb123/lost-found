@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem; /* Space between search bar and filter button */
-  width: 100%;
-  padding:0;
+  width: 80%;
+
 }
 
 /* ========== Search Input ========== */
@@ -13,11 +13,12 @@
   height: 2.5rem;
   max-width: 100%;
   padding: 0 1rem;
-  margin-top: 0;
   background-color: #f9fafb;
   border-radius: 30px;
   color: #003057;
   transition: all 0.2s ease-in-out;
+  margin-top: 0;
+  font-size: 1rem;
 }
 
 .filter-bar .search-input::placeholder {
@@ -32,36 +33,44 @@
 }
 
 /* ========== Filter Button ========== */
-.filter-bar .filter-button {
-  height: 2.5rem;
-  width: 2.5rem;
-  background: url('/path/to/filter-icon.png') no-repeat center center;
-  background-size: contain;
+.filter-button {
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 2.5rem; /* Adjust height as needed */
+  width: 2.5rem; /* Adjust width as needed */
   border: none;
-  border-radius: 50%;
+  border-radius: 50%; /* Make it circular */
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 }
 
-.filter-bar .filter-button:hover {
+.filter-button:hover {
   transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Filter Button Icon */
+.filter-button-icon {
+  width: 1.5rem; /* Adjust icon size */
+  height: 1.5rem;
 }
 
 /* ========== Filter Dropdown ========== */
 .filter-bar .filter-dropdown {
   position: absolute;
-  top:3rem; /* Aligns dropdown below the filter button */
-  right: 15rem; /* Aligns dropdown to the right edge of the button */
-  width: auto; /* Adjust width to fit content */
+  left: 0; 
+  right: 7%; 
+  margin: 0 auto; /* Center the dropdown */
+  max-width: fit-content;
+  top: 3.7rem; /* Aligns dropdown below the filter button */
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.2rem;
   z-index: 50;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: scale(0.95);
-  transform-origin: top right;
   transition: opacity 0.2s ease, transform 0.2s ease;
   display: flex; /* Use flexbox for side-by-side layout */
   gap: 1rem; /* Add spacing between columns */

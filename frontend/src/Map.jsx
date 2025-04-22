@@ -506,14 +506,16 @@ const Map = () => {
       </div>
 
       {showReportForm && (
-        <ReportItemForm
-          onSubmit={handleReportSubmit}
-          onClose={() => {
-            setShowReportForm(false);
-            setSelectedLocation(null);
-          }}
-          selectedLocation={selectedLocation}
-        />
+        <div className={`report-form-overlay ${showReportForm ? "show" : ""}`}>
+          <ReportItemForm
+            onSubmit={handleReportSubmit}
+            onClose={() => {
+              setShowReportForm(false);
+              setSelectedLocation(null);
+            }}
+            selectedLocation={selectedLocation}
+          />
+        </div>
       )}
 
       {selectedItem && (
@@ -524,7 +526,11 @@ const Map = () => {
       )}
 
       {showChat && (
-        <Chat onClose={() => setShowChat(false)} />
+        <div className={`chat-overlay ${showChat ? "show" : ""}`}>
+          <div className="chat-content">
+            <Chat onClose={() => setShowChat(false)} />
+          </div>
+        </div>
       )}
     </div>
   );
