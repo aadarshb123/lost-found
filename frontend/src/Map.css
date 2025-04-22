@@ -509,3 +509,162 @@
   border-radius: 2px;
   cursor: pointer;
 }
+
+.my-items-button {
+  background: #003057;
+  color: white;
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.my-items-button:hover {
+  background: #004880;
+  transform: translateY(-1px);
+}
+
+.my-items-panel {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  max-height: calc(100vh - 120px);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #003057;
+  color: white;
+}
+
+.my-items-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.my-items-header .close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.my-items-content {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.my-items-content .loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.my-items-content .no-items-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.my-items-content .no-items-message p {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.my-items-content .no-items-message button {
+  background: #B3A369;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.my-items-content .item-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.my-items-content .item-card.resolved {
+  opacity: 0.7;
+}
+
+.my-items-content .item-info {
+  margin-bottom: 12px;
+}
+
+.my-items-content .item-type {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.my-items-content .item-type.lost {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.my-items-content .item-type.found {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.my-items-content .item-description {
+  font-size: 16px;
+  color: #333;
+  margin: 8px 0;
+}
+
+.my-items-content .item-location {
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.my-items-content .item-date {
+  font-size: 12px;
+  color: #888;
+  margin: 4px 0;
+}
+
+.my-items-content .resolve-button {
+  width: 100%;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.my-items-content .resolve-button:hover {
+  background: #218838;
+}

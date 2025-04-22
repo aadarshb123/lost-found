@@ -43,6 +43,9 @@ const Map = () => {
   const [showLocationPrompt, setShowLocationPrompt] = useState(true);
   const [showNearbyPanel, setShowNearbyPanel] = useState(false);
   const [proximityRadius, setProximityRadius] = useState(0.5); // Default to 0.5 miles
+  const [showMyItems, setShowMyItems] = useState(false);
+  const [userItems, setUserItems] = useState([]);
+  const [isLoadingUserItems, setIsLoadingUserItems] = useState(false);
 
   const containerStyle = {
     width: '100%',
@@ -349,6 +352,56 @@ const Map = () => {
     }
   }, [userLocation, pins, proximityRadius]);
 
+  // Add function to fetch user's items
+  const fetchUserItems = async () => {
+    setIsLoadingUserItems(true);
+    try {
+      const response = await getItems(); // Using getItems instead of getUserItems
+      // Filter items to only show user's items
+      const userItemsOnly = response.items.filter(
+        item => item.userId === localStorage.getItem('userId')
+      );
+      setUserItems(userItemsOnly);
+    } catch (error) {
+      console.error('Error fetching user items:', error);
+      alert('Failed to load your items. Please try again.');
+    } finally {
+      setIsLoadingUserItems(false);
+    }
+  };
+
+  // Add function to handle resolving items
+  const handleResolveItem = async (itemId) => {
+    try {
+      await fetch(`http://localhost:5001/api/items/deleteItem/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        credentials: 'include'
+      });
+      
+      // Remove the item from userItems
+      setUserItems(prevItems => 
+        prevItems.filter(item => item._id !== itemId)
+      );
+
+      // Remove the item from pins
+      setPins(prevPins => 
+        prevPins.map(pin => ({
+          ...pin,
+          items: pin.items.filter(item => item._id !== itemId)
+        }))
+      );
+
+      alert('Item has been resolved and removed');
+    } catch (error) {
+      console.error('Error resolving item:', error);
+      alert('Failed to resolve item. Please try again.');
+    }
+  };
+
   return (
     <div className="map-container">
       {showLocationPrompt && (
@@ -421,6 +474,15 @@ const Map = () => {
           <FilterBar onFilterChange={filterPins} />
         </div>
         <div className="action-buttons">
+          <button 
+            className="my-items-button"
+            onClick={() => {
+              setShowMyItems(true);
+              fetchUserItems();
+            }}
+          >
+            My Items
+          </button>
           <button className="messages-button" onClick={() => setShowChat(true)}>
             Messages
           </button>
@@ -429,6 +491,55 @@ const Map = () => {
           </button>
         </div>
       </div>
+
+      {/* My Items Panel */}
+      {showMyItems && (
+        <div className="my-items-panel">
+          <div className="my-items-header">
+            <h3>My Items</h3>
+            <button className="close-button" onClick={() => setShowMyItems(false)}>×</button>
+          </div>
+          <div className="my-items-content">
+            {isLoadingUserItems ? (
+              <div className="loading">Loading your items...</div>
+            ) : userItems.length === 0 ? (
+              <div className="no-items-message">
+                <p>You haven't posted any items yet.</p>
+                <button onClick={() => setShowReportForm(true)}>Report an Item</button>
+              </div>
+            ) : (
+              <div className="items-list">
+                {userItems.map(item => (
+                  <div key={item._id} className={`item-card ${item.isResolved ? 'resolved' : ''}`}>
+                    <div className="item-info">
+                      <span className={`item-type ${item.type}`}>
+                        {item.type.toUpperCase()}
+                      </span>
+                      <p className="item-description">{item.description}</p>
+                      <p className="item-location">{item.location.building}</p>
+                      <p className="item-date">
+                        {item.isResolved 
+                          ? `Resolved on ${new Date(item.resolvedAt).toLocaleDateString()}`
+                          : `Posted on ${new Date(item.createdAt).toLocaleDateString()}`
+                        }
+                      </p>
+                    </div>
+                    {!item.isResolved && (
+                      <button 
+                        className="resolve-button"
+                        onClick={() => handleResolveItem(item._id)}
+                      >
+                        Mark as Resolved
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="map-wrapper">
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
