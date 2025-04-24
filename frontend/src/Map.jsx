@@ -17,13 +17,6 @@ const libraries = ['marker', 'visualization'];
 
 const METERS_PER_MILE = 1609.34;
 
-const RADIUS_PRESETS = [
-  { label: '0.1 mi', value: 0.1 },
-  { label: '0.25 mi', value: 0.25 },
-  { label: '0.5 mi', value: 0.5 },
-  { label: '1 mi', value: 1.0 }
-];
-
 const Map = () => {
   const [pins, setPins] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
@@ -42,10 +35,11 @@ const Map = () => {
   const [nearbyItems, setNearbyItems] = useState([]);
   const [showLocationPrompt, setShowLocationPrompt] = useState(true);
   const [showNearbyPanel, setShowNearbyPanel] = useState(false);
-  const [proximityRadius, setProximityRadius] = useState(0.5); // Default to 0.5 miles
+  const [proximityRadius, setProximityRadius] = useState(0); // Changed from 0.5 to 0
   const [showMyItems, setShowMyItems] = useState(false);
   const [userItems, setUserItems] = useState([]);
   const [isLoadingUserItems, setIsLoadingUserItems] = useState(false);
+  const [showRadiusControl, setShowRadiusControl] = useState(true);
 
   const containerStyle = {
     width: '100%',
@@ -404,12 +398,7 @@ const Map = () => {
   };
 
   return (
-
     <div className="map-fullscreen">
-      
-
-
-
       <div className="map-wrapper">
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
           <GoogleMap 
@@ -425,36 +414,69 @@ const Map = () => {
               fullscreenControl: true
             }}
           >
+            {userLocation && (
+              <>
+                <Marker
+                  position={userLocation}
+                  icon={{
+                    path: window.google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#4285F4',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 2,
+                    scale: 8
+                  }}
+                />
+                <Circle
+                  center={userLocation}
+                  radius={getRadiusInMeters(proximityRadius)}
+                  options={{
+                    fillColor: '#4285F4',
+                    fillOpacity: 0.1,
+                    strokeColor: '#4285F4',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                  }}
+                />
+              </>
+            )}
 
-          <div className="top-bar">
-            <div className='title-and-logo'>
-            <img 
-              src="\src\assets\bee.png" 
-              alt="App Icon" 
-              className="app-icon" 
-              style={{ width: '50px', height: '50px', marginRight: '0px' }} 
-            />
-            <p className="title">GT Lost & Found</p>
+            <div className="top-bar">
+              <div className='title-and-logo'>
+                <img 
+                  src="\src\assets\bee.png" 
+                  alt="App Icon" 
+                  className="app-icon" 
+                  style={{ width: '50px', height: '50px', marginRight: '0px' }} 
+                />
+                <p className="title">GT Lost & Found</p>
+              </div>
+              <div className="search-and-filters">
+                <FilterBar onFilterChange={filterPins} />
+              </div>
+              <div className="action-buttons">
+                <button 
+                  className="my-items-button"
+                  onClick={() => {
+                    setShowMyItems(true);
+                    fetchUserItems();
+                  }}
+                >
+                  My Items
+                </button>
+                <button className="messages-button" onClick={() => {
+                  setShowChat(true);
+                  setShowNearbyPanel(false);
+                  setProximityRadius(0);
+                  setShowRadiusControl(false);
+                }}>
+                  Messages
+                </button>
+                <button className="logout-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
             </div>
-            <div className="search-and-filters">
-              <FilterBar onFilterChange={filterPins} />
-            </div>
-            <div className="action-buttons">
-              <button className="messages-button" onClick={() => setShowChat(true)}>
-                Messages
-              </button>
-              <button className="logout-button" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          </div>
-
-
-
-
-
-
-
 
             {selectedPin && (
               <InfoWindow
@@ -505,6 +527,123 @@ const Map = () => {
         </LoadScript>
       </div>
 
+      {showLocationPrompt && (
+        <div className="location-prompt-overlay">
+          <div className="location-prompt-content">
+            <h3>Enable Location Services</h3>
+            <p>Allow us to access your location to notify you when you're near lost or found items.</p>
+            <button onClick={startLocationTracking}>Enable Location</button>
+            <button onClick={() => setShowLocationPrompt(false)}>Not Now</button>
+          </div>
+        </div>
+      )}
+
+      {userLocation && showRadiusControl && (
+        <div className="radius-control-overlay">
+          <label>
+            <span>Search Radius: {proximityRadius.toFixed(2)} miles</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={proximityRadius}
+              onChange={(e) => handleRadiusChange(Number(e.target.value))}
+            />
+          </label>
+        </div>
+      )}
+
+      {showMyItems && (
+        <div className="my-items-overlay">
+          <div className="my-items-panel">
+            <div className="my-items-header">
+              <h3>My Items</h3>
+              <button className="close-button" onClick={() => setShowMyItems(false)}>×</button>
+            </div>
+            <div className="my-items-content">
+              {isLoadingUserItems ? (
+                <div className="loading">Loading your items...</div>
+              ) : userItems.length === 0 ? (
+                <div className="no-items-message">
+                  <p>You haven't posted any items yet.</p>
+                  <button onClick={() => setShowReportForm(true)}>Report an Item</button>
+                </div>
+              ) : (
+                <div className="items-list">
+                  {userItems.map(item => (
+                    <div key={item._id} className={`item-card ${item.isResolved ? 'resolved' : ''}`}>
+                      <div className="item-info">
+                        <span className={`item-type ${item.type}`}>
+                          {item.type.toUpperCase()}
+                        </span>
+                        <p className="item-description">{item.description}</p>
+                        <p className="item-location">{item.location.building}</p>
+                        <p className="item-date">
+                          Posted on ${new Date(item.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <button 
+                        className="resolve-button"
+                        onClick={() => handleResolveItem(item._id)}
+                      >
+                        Mark as Resolved
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showNearbyPanel && nearbyItems.length > 0 && (
+        <div className="nearby-panel-overlay">
+          <div className="nearby-panel">
+            <div className="nearby-header">
+              <h3>Nearby Items ({nearbyItems.length})</h3>
+              <button onClick={() => setShowNearbyPanel(false)}>×</button>
+            </div>
+            <div className="nearby-items">
+              {nearbyItems.map((item, index) => {
+                let distance;
+                try {
+                  distance = calculateDistance(
+                    userLocation.lat,
+                    userLocation.lng,
+                    item.location.coordinates.lat,
+                    item.location.coordinates.lng
+                  );
+                } catch {
+                  distance = Infinity;
+                }
+                
+                return (
+                  <div key={index} className="nearby-item" onClick={() => handleItemClick(item)}>
+                    <div className="nearby-item-content">
+                      <span className={`item-type ${item.type}`}>
+                        {item.type.toUpperCase()}
+                      </span>
+                      <span className="item-description">{item.description}</span>
+                      <span className="item-date">
+                        {new Date(item.date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </div>
+                    <span className="item-distance">
+                      {distance === Infinity ? item.location.building : formatDistance(distance)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {showReportForm && (
         <div className={`report-form-overlay ${showReportForm ? "show" : ""}`}>
           <ReportItemForm
@@ -522,13 +661,25 @@ const Map = () => {
         <ItemDetailOverlay
           item={selectedItem}
           onClose={() => setSelectedItem(null)}
+          onOpenChat={() => {
+            setSelectedItem(null);
+            setShowChat(true);
+            setShowRadiusControl(false);
+            setShowNearbyPanel(false);
+            setProximityRadius(0);
+          }}
         />
       )}
 
       {showChat && (
         <div className={`chat-overlay ${showChat ? "show" : ""}`}>
           <div className="chat-content">
-            <Chat onClose={() => setShowChat(false)} />
+            <Chat onClose={() => {
+              setShowChat(false);
+              setShowRadiusControl(true);
+              setShowNearbyPanel(true);
+              setProximityRadius(0.42); // Setting a default radius when reopening
+            }} />
           </div>
         </div>
       )}

@@ -16,7 +16,7 @@ const MessageModal = ({ itemId, onClose }) => {
 
     try {
       await startItemConversation(itemId, message);
-      onClose();
+      onClose(true);
     } catch (err) {
       setError(err.message || 'Failed to send message');
     } finally {
@@ -27,7 +27,7 @@ const MessageModal = ({ itemId, onClose }) => {
   return (
     <div className="message-modal">
       <div className="message-modal-content">
-        <button className="close-button" onClick={onClose}>×</button>
+        <button className="close-button" onClick={() => onClose(false)}>×</button>
         <h3>Send Message to Item Owner</h3>
         
         {error && <div className="error-message">{error}</div>}

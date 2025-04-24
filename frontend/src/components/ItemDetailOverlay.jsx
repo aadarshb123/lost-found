@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import MessageModal from './MessageModal';
 import './ItemDetailOverlay.css';
 
-const ItemDetailOverlay = ({ item, onClose }) => {
+const ItemDetailOverlay = ({ item, onClose, onOpenChat }) => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
 
   const handleBackdropClick = useCallback((e) => {
@@ -11,6 +11,13 @@ const ItemDetailOverlay = ({ item, onClose }) => {
       onClose();
     }
   }, [onClose]);
+
+  const handleMessageModalClose = (shouldOpenChat) => {
+    setIsMessageModalOpen(false);
+    if (shouldOpenChat) {
+      onOpenChat();
+    }
+  };
 
   if (!item) return null;
 
@@ -67,7 +74,7 @@ const ItemDetailOverlay = ({ item, onClose }) => {
       {isMessageModalOpen && (
         <MessageModal
           itemId={item._id}
-          onClose={() => setIsMessageModalOpen(false)}
+          onClose={handleMessageModalClose}
         />
       )}
     </div>
