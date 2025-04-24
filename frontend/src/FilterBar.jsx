@@ -22,7 +22,7 @@ const FilterBar = ({ onFilterChange }) => {
 
       <input
         type="text"
-        placeholder="Search lost & found items..."
+        placeholder="Search items..."
         onChange={handleSearchChange}
         className="search-input"
       />
